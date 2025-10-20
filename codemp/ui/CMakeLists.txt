@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.10)
 
 # Make sure the user is not executing this script directly
 if(NOT InOpenJK)
@@ -8,9 +8,13 @@ endif(NOT InOpenJK)
 set(MPUIIncludeDirectories "${MPDir}")
 if(WIN32)
 	set(MPUILibraries "odbc32" "odbccp32") # what are these even?
-else(WIN32)
+elseif(UNIX AND NOT APPLE)
+	set(MPUILibraries "m" "pthread" "dl")
+elseif(APPLE)
+	set(MPUILibraries "m" "pthread")
+else()
 	message("codemp/ui/CMakeLists.txt might need some libraries to link properly on your platform.")
-endif(WIN32)
+endif()
 set(MPUIDefines ${MPSharedDefines} "UI_EXPORTS" "MISSIONPACK" "_USRDLL")
 
 set(MPUIGameFiles
@@ -60,7 +64,7 @@ source_group("ui" FILES ${MPUIUIFiles})
 set(MPUIFiles ${MPUIFiles} ${MPUIUIFiles})
 
 set(MPUICgameFiles
-	"${MPDir}/cgame/tr_types.h"
+	"${MPDir}/renderer/tr_types.h"
 	)
 source_group("cgame" FILES ${MPUICgameFiles})
 set(MPUIFiles ${MPUIFiles} ${MPUICgameFiles})

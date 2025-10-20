@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.10)
 
 # Make sure the user is not executing this script directly
 if(NOT InOpenJK)
@@ -8,9 +8,13 @@ endif(NOT InOpenJK)
 set(MPCGameIncludeDirectories "${MPDir}")
 if(WIN32)
 	set(MPCGameLibraries "odbc32" "odbccp32") # what are these even?
-else(WIN32)
+elseif(UNIX AND NOT APPLE)
+	set(MPCGameLibraries "m" "pthread" "dl")
+elseif(APPLE)
+	set(MPCGameLibraries "m" "pthread")
+else()
 	message("codemp/cgame/CMakeLists.txt might need some libraries to link properly on your platform.")
-endif(WIN32)
+endif()
 set(MPCGameDefines ${MPSharedDefines} "CGAME" "MISSIONPACK" )
 set(MPCGameGameFiles
 	"${MPDir}/game/AnimalNPC.c"
@@ -81,7 +85,7 @@ set(MPCGameCgameFiles
 	"${MPDir}/cgame/cg_xcvar.h"
 	"${MPDir}/cgame/fx_local.h"
 	"${MPDir}/cgame/holocronicons.h"
-	"${MPDir}/cgame/tr_types.h"
+	"${MPDir}/renderer/tr_types.h"
 	)
 source_group("cgame" FILES ${MPCGameCgameFiles})
 set(MPCGameFiles ${MPCGameFiles} ${MPCGameCgameFiles})

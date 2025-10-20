@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.10)
 
 # Make sure the user is not executing this script directly
 if(NOT InOpenJK)
@@ -15,9 +15,13 @@ if(BuildSPEngine)
 	# Libraries
 	if(WIN32)
 		set(SPEngineLibraries "winmm")
-	else(WIN32)
+	elseif(UNIX AND NOT APPLE)
+		set(SPEngineLibraries "m" "pthread" "dl")
+	elseif(APPLE)
+		set(SPEngineLibraries "m" "pthread")
+	else()
 		message("You might need to add libraries to code/CMakeLists.txt for this to link properly on your platform.")
-	endif(WIN32)
+	endif()
 	# Defines
 	set(SPEngineDefines ${SharedDefines} "_JK2EXE")
 	
@@ -26,8 +30,10 @@ if(BuildSPEngine)
 	# OpenGL
 	# (mrw) TODO Is this actually required on windows? It is loaded at runtime, should not be linked?
 	find_package(OpenGL REQUIRED)
-	set(SPEngineIncludeDirectories ${SPEngineIncludeDirectories} ${OPENGL_INCLUDE_DIR})
-	set(SPEngineLibraries ${SPEngineLibraries} ${OPENGL_LIBRARIES})
+	if(OPENGL_FOUND)
+		set(SPEngineIncludeDirectories ${SPEngineIncludeDirectories} ${OPENGL_INCLUDE_DIR})
+		set(SPEngineLibraries ${SPEngineLibraries} ${OPENGL_LIBRARIES})
+	endif()
 
 	# OpenAL (is optionally included for Windows)
 	if(UseInternalOpenAL)
@@ -318,9 +324,14 @@ if(BuildSPEngine)
 			"${SPDir}/win32/glw_win.h"
 			"${SPDir}/win32/winquake.rc"
 			)
-	else(WIN32)
-		message("Please add the OS-Specific files for your OS to codemp/CMakeLists.txt")
-	endif(WIN32)
+	else()
+		# Add Unix/Linux specific files here
+		if(UNIX AND NOT APPLE)
+			# Linux files
+		elseif(APPLE)
+			# macOS files
+		endif()
+	endif()
 	set(SPEngineFiles ${SPEngineFiles} ${SPEngineSortMe} ${J_SRC})
 	source_group("SortMe" FILES ${SPEngineSortMe})
 	source_group("jpeg-6" FILES ${J_SRC})
@@ -329,9 +340,9 @@ if(BuildSPEngine)
 
 	if(WIN32)
 		add_executable(${SPEngine} WIN32 ${SPEngineFiles})
-	else(WIN32)
+	elseif(UNIX)
 		add_executable(${SPEngine} ${SPEngineFiles})
-	endif(WIN32)
+	endif()
 	set_target_properties(${SPEngine} PROPERTIES COMPILE_DEFINITIONS_RELEASE "${SPEngineDefines};${ReleaseDefines}")
 	set_target_properties(${SPEngine} PROPERTIES COMPILE_DEFINITIONS_DEBUG "${SPEngineDefines};${DebugDefines}")
 	set_target_properties(${SPEngine} PROPERTIES INCLUDE_DIRECTORIES "${SPEngineIncludeDirectories}")

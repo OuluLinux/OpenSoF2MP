@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.10)
 # For checks in subdirectories
 set(InOpenJK TRUE)
 
@@ -52,9 +52,11 @@ set(JK2SPDir "${CMAKE_SOURCE_DIR}/codeJK2")
 # Common settings
 if(WIN32)
 	set(SharedDefines "WIN32" "_WINDOWS")
-else(WIN32)
-	message("Please find out what the defines for your platform are and add them to CMakeLists.txt")
-endif(WIN32)
+elseif(UNIX)
+	set(SharedDefines "_LINUX" "GNUC")
+else()
+	message("Platform not supported - please add appropriate defines to CMakeLists.txt")
+endif()
 
 set(DebugDefines "_DEBUG")
 set(ReleaseDefines "NDEBUG" "FINAL_BUILD")

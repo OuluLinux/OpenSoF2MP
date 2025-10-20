@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.10)
 
 # Make sure the user is not executing this script directly
 if(NOT InOpenJK)
@@ -118,9 +118,13 @@ if(BuildMPEngine OR BuildMPDed)
 	# Platform-specific libraries
 	if(WIN32)
 		set(MPEngineAndDedLibraries ${MPEngineAndDedLibraries} "winmm" "wsock32")
-	else(WIN32)
+	elseif(UNIX AND NOT APPLE)
+		set(MPEngineAndDedLibraries ${MPEngineAndDedLibraries} "m" "pthread" "dl")
+	elseif(APPLE)
+		set(MPEngineAndDedLibraries ${MPEngineAndDedLibraries} "m" "pthread")
+	else()
 		message("You might need to add some libraries to codemp/CMakeLists.txt or you could get linker errors on non-Windows-OSs.")
-	endif(WIN32)
+	endif()
 	# Include directories
 	set(MPEngineAndDedIncludeDirectories ${MPDir}) # codemp folder, since includes are not always relative in the files
 	
@@ -141,7 +145,7 @@ if(BuildMPEngine OR BuildMPDed)
 	
 	set(MPEngineAndDedCgameFiles
 		"${MPDir}/cgame/cg_public.h"
-		"${MPDir}/cgame/tr_types.h"
+		"${MPDir}/renderer/tr_types.h"
 		)
 	source_group("cgame" FILES ${MPEngineAndDedCgameFiles})
 	set(MPEngineAndDedFiles ${MPEngineAndDedFiles} ${MPEngineAndDedCgameFiles})
@@ -207,10 +211,6 @@ if(BuildMPEngine OR BuildMPDed)
 		"${MPDir}/qcommon/RoffSystem.cpp"
 		"${MPDir}/qcommon/RoffSystem.h"
 		"${MPDir}/qcommon/sstring.h"
-		"${MPDir}/qcommon/stringed_ingame.cpp"
-		"${MPDir}/qcommon/stringed_ingame.h"
-		"${MPDir}/qcommon/stringed_interface.cpp"
-		"${MPDir}/qcommon/stringed_interface.h"
 		"${MPDir}/qcommon/tags.h"
 		"${MPDir}/qcommon/timing.h"
 		"${MPDir}/qcommon/vm.cpp"
@@ -222,19 +222,7 @@ if(BuildMPEngine OR BuildMPDed)
 	source_group("common" FILES ${MPEngineAndDedCommonFiles})
 	set(MPEngineAndDedFiles ${MPEngineAndDedFiles} ${MPEngineAndDedCommonFiles})
 	
-	set(MPEngineAndDedG2Files
-		"${MPDir}/ghoul2/G2.h"
-		"${MPDir}/ghoul2/G2_API.cpp"
-		"${MPDir}/ghoul2/G2_bolts.cpp"
-		"${MPDir}/ghoul2/G2_bones.cpp"
-		"${MPDir}/ghoul2/G2_gore.h"
-		"${MPDir}/ghoul2/G2_local.h"
-		"${MPDir}/ghoul2/G2_misc.cpp"
-		"${MPDir}/ghoul2/G2_surfaces.cpp"
-		"${MPDir}/ghoul2/ghoul2_shared.h"
-		)
-	source_group("ghoul2" FILES ${MPEngineAndDedG2Files})
-	set(MPEngineAndDedFiles ${MPEngineAndDedFiles} ${MPEngineAndDedG2Files})
+	
 	
 	set(MPEngineAndDedIcarusFiles
 		"${MPDir}/icarus/BlockStream.cpp"
@@ -264,26 +252,7 @@ if(BuildMPEngine OR BuildMPDed)
 	source_group("icarus" FILES ${MPEngineAndDedIcarusFiles})
 	set(MPEngineAndDedFiles ${MPEngineAndDedFiles} ${MPEngineAndDedIcarusFiles})
 	
-	set(MPEngineAndDedRendererFiles
-		"${MPDir}/renderer/glext.h"
-		"${MPDir}/renderer/matcomp.c"
-		"${MPDir}/renderer/matcomp.h"
-		"${MPDir}/renderer/mdx_format.h"
-		"${MPDir}/renderer/qgl.h"
-		"${MPDir}/renderer/tr_backend.cpp"
-		"${MPDir}/renderer/tr_font.h"
-		"${MPDir}/renderer/tr_ghoul2.cpp"
-		"${MPDir}/renderer/tr_image.cpp"
-		"${MPDir}/renderer/tr_init.cpp"
-		"${MPDir}/renderer/tr_local.h"
-		"${MPDir}/renderer/tr_main.cpp"
-		"${MPDir}/renderer/tr_mesh.cpp"
-		"${MPDir}/renderer/tr_model.cpp"
-		"${MPDir}/renderer/tr_public.h"
-		"${MPDir}/renderer/tr_shader.cpp"
-		)
-	source_group("renderer" FILES ${MPEngineAndDedRendererFiles})
-	set(MPEngineAndDedFiles ${MPEngineAndDedFiles} ${MPEngineAndDedRendererFiles})
+	
 	
 	set(MPEngineAndDedRmgFiles
 		"${MPDir}/RMG/RM_Area.cpp"
@@ -365,9 +334,14 @@ if(BuildMPEngine OR BuildMPDed)
 			)
 		source_group("win32" FILES ${MPEngineAndDedWin32Files})
 		set(MPEngineAndDedFiles ${MPEngineAndDedFiles} ${MPEngineAndDedWin32Files})
-	else(WIN32)
-		message("TODO: Non-Win32 support")
-	endif(WIN32)
+	else()
+		# TODO: Add Unix/Linux specific files here
+		if(UNIX AND NOT APPLE)
+			# Linux specific files can be added here
+		elseif(APPLE)
+			# macOS specific files can be added here
+		endif()
+	endif()
 	
 endif(BuildMPEngine OR BuildMPDed)
 
@@ -483,33 +457,7 @@ if(BuildMPEngine)
 	source_group("ravl" FILES ${MPEngineRavlFiles})
 	set(MPEngineFiles ${MPEngineFiles} ${MPEngineRavlFiles})
 	
-	set(MPEngineRendererFiles
-		"${MPDir}/renderer/tr_animation.cpp"
-		"${MPDir}/renderer/tr_arioche.cpp"
-		"${MPDir}/renderer/tr_bsp.cpp"
-		"${MPDir}/renderer/tr_cmds.cpp"
-		"${MPDir}/renderer/tr_curve.cpp"
-		"${MPDir}/renderer/tr_font.cpp"
-		"${MPDir}/renderer/tr_landscape.h"
-		"${MPDir}/renderer/tr_light.cpp"
-		"${MPDir}/renderer/tr_marks.cpp"
-		"${MPDir}/renderer/tr_noise.cpp"
-		"${MPDir}/renderer/tr_quicksprite.cpp"
-		"${MPDir}/renderer/tr_quicksprite.h"
-		"${MPDir}/renderer/tr_scene.cpp"
-		"${MPDir}/renderer/tr_shade.cpp"
-		"${MPDir}/renderer/tr_shade_calc.cpp"
-		"${MPDir}/renderer/tr_shadows.cpp"
-		"${MPDir}/renderer/tr_sky.cpp"
-		"${MPDir}/renderer/tr_surface.cpp"
-		"${MPDir}/renderer/tr_surfacesprites.cpp"
-		"${MPDir}/renderer/tr_terrain.cpp"
-		"${MPDir}/renderer/tr_world.cpp"
-		"${MPDir}/renderer/tr_WorldEffects.cpp"
-		"${MPDir}/renderer/tr_WorldEffects.h"
-		)
-	source_group("renderer" FILES ${MPEngineRendererFiles})
-	set(MPEngineFiles ${MPEngineFiles} ${MPEngineRendererFiles})
+	
 	
 	set(MPEngineMp3Files
 		"${MPDir}/mp3code/cdct.c"
@@ -571,9 +519,9 @@ if(BuildMPEngine)
 
 	if(WIN32)
 		add_executable(${MPEngine} WIN32 ${MPEngineFiles})
-	else(WIN32)
+	elseif(UNIX)
 		add_executable(${MPEngine} ${MPEngineFiles})
-	endif(WIN32)
+	endif()
 	set_target_properties(${MPEngine} PROPERTIES COMPILE_DEFINITIONS_RELEASE "${MPEngineDefines};${ReleaseDefines}")
 	set_target_properties(${MPEngine} PROPERTIES COMPILE_DEFINITIONS_DEBUG "${MPEngineDefines};${DebugDefines}")
 	set_target_properties(${MPEngine} PROPERTIES INCLUDE_DIRECTORIES "${MPEngineIncludeDirectories}")
@@ -606,9 +554,10 @@ if(BuildMPDed)
 			)
 		source_group("win32" FILES ${MPDedWin32Files})
 		set(MPDedFiles ${MPDedFiles} ${MPDedWin32Files})
-	else(WIN32)
-		message( "Add your dedicated server files to codemp/CMakeLists.txt please" )
-	endif(WIN32)
+	else()
+		# Add Unix/Linux specific files here if needed
+		# For now, the null files should be sufficient for cross-platform support
+	endif()
 	
 	add_executable(${MPDed} ${MPDedFiles})
 	set_target_properties(${MPDed} PROPERTIES COMPILE_DEFINITIONS_RELEASE "${MPDedDefines};${ReleaseDefines}")

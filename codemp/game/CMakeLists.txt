@@ -1,4 +1,4 @@
-cmake_minimum_required(VERSION 2.8)
+cmake_minimum_required(VERSION 3.10)
 
 # Make sure the user is not executing this script directly
 if(NOT InOpenJK)
@@ -8,9 +8,13 @@ endif(NOT InOpenJK)
 set(MPGameIncludeDirectories "${MPDir}")
 if(WIN32)
 	set(MPGameLibraries "winmm")
-else(WIN32)
+elseif(UNIX AND NOT APPLE)
+	set(MPGameLibraries "m" "pthread" "dl")
+elseif(APPLE)
+	set(MPGameLibraries "m" "pthread")
+else()
 	message("codemp/game/CMakeLists.txt might need some libraries to link properly on your platform.")
-endif(WIN32)
+endif()
 set(MPGameDefines ${MPSharedDefines} "QAGAME" "MISSIONPACK" )
 set(MPGameGameFiles
 	"${MPDir}/game/ai_main.c"
@@ -145,7 +149,7 @@ set(MPGameCgameFiles
 	"${MPDir}/cgame/animtable.h"
 	"${MPDir}/cgame/cg_local.h"
 	"${MPDir}/cgame/cg_public.h"
-	"${MPDir}/cgame/tr_types.h"
+	"${MPDir}/renderer/tr_types.h"
 	)
 source_group("cgame" FILES ${MPGameCgameFiles})
 set(MPGameFiles ${MPGameFiles} ${MPGameCgameFiles})
