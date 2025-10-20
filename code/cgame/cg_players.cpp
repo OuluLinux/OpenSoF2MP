@@ -23,7 +23,7 @@ This file is part of Jedi Academy.
 //#include "cg_local.h"
 #include "cg_media.h"
 #include "FxScheduler.h"
-#include "..\game\ghoul2_shared.h"
+#include "../game/ghoul2_shared.h"
 #include "..\game\anims.h"
 #include "..\game\wp_saber.h"
 #include "..\game\g_vehicles.h"
