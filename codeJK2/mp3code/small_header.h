@@ -22,11 +22,19 @@ typedef struct
 }
 IN_OUT;
 
-#ifdef WIN32 // Damn linux gcc isn't detecting byte as defined
-#ifndef byte
+// Avoid conflict with C++17 std::byte
+#ifdef __cplusplus
+// Prevent std::byte from being defined
+#ifdef __cpp_lib_byte
+#undef __cpp_lib_byte
+#endif
+// Undefine any existing byte definition
+#ifdef byte
+#undef byte
+#endif
+#endif
+
 typedef unsigned char byte;
-#endif
-#endif
 
 #endif	// #ifndef SMALL_HEADER_H
 

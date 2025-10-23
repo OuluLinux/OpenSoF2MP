@@ -205,7 +205,7 @@ void ImperialProbe_Strafe( void )
 
 	AngleVectors( NPC->client->renderInfo.eyeAngles, NULL, right, NULL );
 
-	// Pick a random strafe direction, then check to see if doing a strafe would be
+	// Pick a Q_random strafe direction, then check to see if doing a strafe would be
 	//	reasonable valid
 	dir = ( rand() & 1 ) ? -1 : 1;
 	VectorMA( NPC->currentOrigin, HUNTER_STRAFE_DIS * dir, right, end );
@@ -222,7 +222,7 @@ void ImperialProbe_Strafe( void )
 
 		// Set the strafe start time so we can do a controlled roll
 		NPC->fx_time = level.time;
-		NPCInfo->standTime = level.time + 3000 + random() * 500;
+		NPCInfo->standTime = level.time + 3000 + Q_random() * 500;
 	}
 }
 
@@ -494,7 +494,7 @@ void NPC_Probe_Pain( gentity_t *self, gentity_t *inflictor, gentity_t *other, co
 	{
 		pain_chance = NPC_GetPainChance( self, damage );
 
-		if ( random() < pain_chance )	// Spin around in pain?
+		if ( Q_random() < pain_chance )	// Spin around in pain?
 		{
 			NPC_SetAnim( self, SETANIM_BOTH, BOTH_PAIN1, SETANIM_FLAG_OVERRIDE);
 		}	

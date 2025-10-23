@@ -29,7 +29,7 @@ This file is part of Jedi Academy.
 //#endif
 
 #if !defined(TEAMS_H_INC)
-	#include "../game/Teams.h"
+	// #include "../game/Teams.h"  // File doesn't exist in this codebase
 #endif
 
 //#if !defined(IGINTERFACE_H_INC)

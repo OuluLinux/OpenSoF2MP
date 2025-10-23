@@ -166,6 +166,20 @@ void Sys_PumpEvents( void );
 typedef unsigned long		ulong;
 typedef unsigned short		word;
 
+// Avoid conflict with C++17 std::byte by using a different approach
+// Always undefine byte if it's defined as std::byte to prevent conflicts
+#ifdef __cplusplus
+// Prevent std::byte from being defined
+#ifdef __cpp_lib_byte
+#undef __cpp_lib_byte
+#endif
+
+// Undefine any existing byte definition
+#ifdef byte
+#undef byte
+#endif
+#endif
+
 typedef unsigned char 		byte;
 
 typedef enum {qfalse, qtrue}	qboolean;

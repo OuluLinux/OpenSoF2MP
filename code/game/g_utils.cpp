@@ -592,7 +592,7 @@ int G_RadiusList ( vec3_t origin, float radius,	gentity_t *ignore, qboolean take
 =============
 G_PickTarget
 
-Selects a random entity from among the targets
+Selects a Q_random entity from among the targets
 =============
 */
 #define MAXCHOICES	32

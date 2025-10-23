@@ -30,7 +30,7 @@ This file is part of Jedi Academy.
 #endif
 	#include "..\Ratl\string_vs.h"
 	#include "..\Rufl\hstring.h"
-	#include "..\Ratl\vector_vs.h"
+	#include "../Ratl/vector_vs.h"
 
 extern void WP_RemoveSaber( gentity_t *ent, int saberNum );
 extern qboolean NPCsPrecached;
@@ -69,7 +69,7 @@ stringID_table_t footstepTypeTable[] =
 	//must be terminated
 	NULL,-1
 };
-
+	#include "../Ratl/vector_vs.h"
 stringID_table_t FPTable[] =
 {
 	ENUM2STRING(FP_HEAL),
@@ -297,7 +297,7 @@ saber_colors_t TranslateSaberColor( const char *name )
 	{
 		return SABER_PURPLE;
 	}
-	if ( !Q_stricmp( name, "random" ) ) 
+	if ( !Q_stricmp( name, "Q_random" ) ) 
 	{
 		return ((saber_colors_t)(Q_irand( SABER_ORANGE, SABER_PURPLE )));
 	}
@@ -1273,8 +1273,8 @@ void NPC_PrecacheAnimationCFG( const char *NPC_type )
 	const char	*value;
 	const char	*p;
 
-	if ( !Q_stricmp( "random", NPC_type ) )
-	{//sorry, can't precache a random just yet
+	if ( !Q_stricmp( "Q_random", NPC_type ) )
+	{//sorry, can't precache a Q_random just yet
 		return;
 	}
 
@@ -1605,8 +1605,8 @@ void CG_NPC_Precache ( gentity_t *spawner )
 	char	playerModel[MAX_QPATH] = { 0 };
 	char	customSkin[MAX_QPATH];
 
-	if ( !Q_stricmp( "random", spawner->NPC_type ) )
-	{//sorry, can't precache a random just yet
+	if ( !Q_stricmp( "Q_random", spawner->NPC_type ) )
+	{//sorry, can't precache a Q_random just yet
 		return;
 	}
 
@@ -2057,7 +2057,7 @@ qboolean NPC_ParseParms( const char *NPCName, gentity_t *NPC )
 
 	*(int*)ri->customRGBA=-1;
 
-	if ( !Q_stricmp( "random", NPCName ) )
+	if ( !Q_stricmp( "Q_random", NPCName ) )
 	{//Randomly assemble an NPC
 		NPC_BuildRandom( NPC );
 	}
@@ -2125,7 +2125,7 @@ qboolean NPC_ParseParms( const char *NPCName, gentity_t *NPC )
 					continue;
 				}
 				
-				if ( !Q_stricmp( value, "random") )
+				if ( !Q_stricmp( value, "Q_random") )
 				{
 					ri->customRGBA[0]=Q_irand(0,255);
 					ri->customRGBA[1]=Q_irand(0,255);

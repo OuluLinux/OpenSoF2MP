@@ -146,7 +146,7 @@ static void NPC_CheckAttacker( gentity_t *other, int mod )
 		}
 
 		//Randomly pick up the target
-		if ( random() > luckThreshold )
+		if ( Q_random() > luckThreshold )
 		{
 			G_ClearEnemy( other );
 			other->enemy = NPC;
@@ -301,7 +301,7 @@ void NPC_ChoosePainAnimation( gentity_t *self, gentity_t *other, const vec3_t po
 	}
 
 	//See if we're going to flinch
-	if ( random() < pain_chance )
+	if ( Q_random() < pain_chance )
 	{
 		//Pick and play our animation
 		if ( (self->client->ps.eFlags&EF_FORCE_GRIPPED) )

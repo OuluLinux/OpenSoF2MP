@@ -278,7 +278,7 @@ void BotOrder(gentity_t *ent, int clientnum, int ordernum)
 //See if bot is mindtricked by the client in question
 int BotMindTricked(int botClient, int enemyClient)
 {
-	forcedata_t *fd;
+	forceData_t *fd;
 
 	if (!g_entities[enemyClient].client)
 	{

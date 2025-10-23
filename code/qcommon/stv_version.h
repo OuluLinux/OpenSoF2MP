@@ -17,14 +17,14 @@ This file is part of Jedi Academy.
 // Copyright 2001-2013 Raven Software
 
 // Current version of the single player game
-#include "../win32/autoversion.h"
+#include "../win32/AutoVersion.h"
 
 #ifdef _DEBUG
-	#define	Q3_VERSION		"(debug)OpenJK: v"VERSION_STRING_DOTTED
+	#define	Q3_VERSION		"(debug)OpenJK: v" VERSION_STRING_DOTTED
 #elif defined FINAL_BUILD
-	#define	Q3_VERSION		"OpenJK: v"VERSION_STRING_DOTTED
+	#define	Q3_VERSION		"OpenJK: v" VERSION_STRING_DOTTED
 #else
-	#define	Q3_VERSION		"(internal)OpenJK: v"VERSION_STRING_DOTTED
+	#define	Q3_VERSION		"(internal)OpenJK: v" VERSION_STRING_DOTTED
 #endif
 // end
 

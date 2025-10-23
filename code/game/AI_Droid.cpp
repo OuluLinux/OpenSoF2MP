@@ -247,7 +247,7 @@ void Droid_Spin( void )
 			if (TIMER_Done(NPC,"roam"))
 			{	
 				TIMER_Set( NPC, "roam", Q_irand( 250, 1000 ) );
-				NPCInfo->desiredYaw = Q_irand( 0, 360 ); // Go in random directions
+				NPCInfo->desiredYaw = Q_irand( 0, 360 ); // Go in Q_random directions
 			}
 		}
 		else
@@ -298,7 +298,7 @@ void NPC_Droid_Pain( gentity_t *self, gentity_t *inflictor, gentity_t *other, co
 		pain_chance = NPC_GetPainChance( self, damage );
 
 		// Put it in pain
-		if ( mod == MOD_DEMP2 || mod == MOD_DEMP2_ALT || random() < pain_chance )	// Spin around in pain? Demp2 always does this
+		if ( mod == MOD_DEMP2 || mod == MOD_DEMP2_ALT || Q_random() < pain_chance )	// Spin around in pain? Demp2 always does this
 		{
 			// Health is between 0-30 or was hit by a DEMP2 so pop his head
 			if ( self->health < 30 || mod == MOD_DEMP2 || mod == MOD_DEMP2_ALT )
@@ -364,7 +364,7 @@ void NPC_Droid_Pain( gentity_t *self, gentity_t *inflictor, gentity_t *other, co
 
 		pain_chance = NPC_GetPainChance( self, damage );
 
-		if ( mod == MOD_DEMP2 || mod == MOD_DEMP2_ALT || random() < pain_chance )	// Spin around in pain? Demp2 always does this
+		if ( mod == MOD_DEMP2 || mod == MOD_DEMP2_ALT || Q_random() < pain_chance )	// Spin around in pain? Demp2 always does this
 		{
 			anim = self->client->ps.legsAnim;
 
@@ -561,7 +561,7 @@ void NPC_BSDroid_Default( void )
 	else if ( NPCInfo->localState == LSTATE_DROP )
 	{
 		NPC_UpdateAngles( qtrue, qtrue );
-		ucmd.upmove = crandom() * 64;
+		ucmd.upmove = Q_crandom() * 64;
 	}
 	else if ( NPCInfo->scriptFlags & SCF_LOOK_FOR_ENEMIES )
 	{

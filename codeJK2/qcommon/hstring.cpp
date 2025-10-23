@@ -1,4 +1,10 @@
+#ifdef _WIN32
+#ifdef _WIN32
+#ifdef _WIN32
 #include <windows.h>
+#endif
+#endif
+#endif
 #include "cm_local.h"
 #include "hstring.h"
 

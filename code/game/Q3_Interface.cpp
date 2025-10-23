@@ -102,7 +102,7 @@ stringID_table_t BSTable[] =
 	ENUM2STRING(BS_FOLLOW_LEADER),//# Follow your leader and shoot any enemies you come across
 	ENUM2STRING(BS_JUMP),//# Face navgoal and jump to it.
 	ENUM2STRING(BS_SEARCH),//# Using current waypoint as a base), search the immediate branches of waypoints for enemies
-	ENUM2STRING(BS_WANDER),//# Wander down random waypoint paths
+	ENUM2STRING(BS_WANDER),//# Wander down Q_random waypoint paths
 	ENUM2STRING(BS_NOCLIP),//# Moves through walls), etc.
 	ENUM2STRING(BS_REMOVE),//# Waits for player to leave PVS then removes itself
 	ENUM2STRING(BS_CINEMATIC),//# Does nothing but face it's angles and move to a goal if it has one
@@ -9673,7 +9673,7 @@ void	CQuake3GameInterface::Remove( int entID, const char *name )
 	}
 }
 
-// Get a random (float) number.
+// Get a Q_random (float) number.
 float	CQuake3GameInterface::Random( float min, float max )
 {
 	return ((rand() * (max - min)) / 32768.0F) + min;

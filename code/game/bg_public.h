@@ -261,7 +261,7 @@ typedef enum {
 #define EF_DISABLE_SHADER_ANIM	0x10000000	// Normally shader animation chugs along, but movers can force shader animation to be on frame 1
 #define EF_FORCE_GRIPPED		0x20000000	// Force gripped effect
 #define EF_FORCE_DRAINED		0x40000000	// Force drained effect
-#define EF_BLOCKED_MOVER		0x80000000	// for movers that are blocked - shared with previous
+#define EF_BLOCKED_MOVER		0x80000000U	// for movers that are blocked - shared with previous
 
 typedef enum {
 	PW_NONE,

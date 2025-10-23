@@ -374,17 +374,17 @@ extern void SP_fx_runner( gentity_t *ent );
 			return;
 		}
 	}
-	else if ( Q_stricmp( gi.argv(1), "random" ) == 0 )
+	else if ( Q_stricmp( gi.argv(1), "Q_random" ) == 0 )
 	{
 		while (( fx_ent = G_Find( fx_ent, FOFS(classname), "cmd_fx")) != NULL ) 
 		{
 			if ( gi.argc() == 3 )
 			{
-				fx_ent->random = atoi( gi.argv( 2 ));
+				fx_ent->Q_random = atoi( gi.argv( 2 ));
 			}
 			else
 			{
-				gi.Printf( S_COLOR_GREEN"FX: current random is: %6.2f\n", fx_ent->random );
+				gi.Printf( S_COLOR_GREEN"FX: current Q_random is: %6.2f\n", fx_ent->Q_random );
 			}
 
 			return;
@@ -443,7 +443,7 @@ extern void SP_fx_runner( gentity_t *ent );
 	gi.Printf( S_COLOR_CYAN"fx play <filename>     fx play sparks, fx play env/fire\n" );
 	gi.Printf( S_COLOR_CYAN"fx stop                fx stop\n" );		
 	gi.Printf( S_COLOR_CYAN"fx delay <#>           fx delay 1000\n" );
-	gi.Printf( S_COLOR_CYAN"fx random <#>          fx random 200\n" );
+	gi.Printf( S_COLOR_CYAN"fx Q_random <#>          fx Q_random 200\n" );
 	gi.Printf( S_COLOR_CYAN"fx origin <#><#><#>    fx origin 10 20 30\n" );
 	gi.Printf( S_COLOR_CYAN"fx dir <#><#><#>       fx dir 0 0 -1\n\n" );
 }

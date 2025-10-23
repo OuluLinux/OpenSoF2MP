@@ -255,7 +255,7 @@ void G_CopySaberItemValues( gentity_t *pickUpSaber, gentity_t *oldSaber )
 	if ( oldSaber && pickUpSaber )
 	{
 		oldSaber->spawnflags = pickUpSaber->spawnflags;
-		oldSaber->random = pickUpSaber->random;
+		oldSaber->Q_random = pickUpSaber->Q_random;
 		oldSaber->flags = pickUpSaber->flags;
 	}
 }
@@ -977,13 +977,13 @@ gentity_t *LaunchItem( gitem_t *item, const vec3_t origin, const vec3_t velocity
 
 	if ( item->giType == IT_WEAPON )
 	{
-		// give weapon items zero pitch, a random yaw, and rolled onto their sides...but would be bad to do this for a bowcaster
+		// give weapon items zero pitch, a Q_random yaw, and rolled onto their sides...but would be bad to do this for a bowcaster
 		if ( item->giTag != WP_BOWCASTER
 			&& item->giTag != WP_THERMAL
 			&& item->giTag != WP_TRIP_MINE
 			&& item->giTag != WP_DET_PACK )
 		{
-			VectorSet( dropped->s.angles, 0, crandom() * 180, 90.0f );
+			VectorSet( dropped->s.angles, 0, Q_crandom() * 180, 90.0f );
 			G_SetAngles( dropped, dropped->s.angles );
 		}
 	}
@@ -1020,7 +1020,7 @@ gentity_t *Drop_Item( gentity_t *ent, gitem_t *item, float angle, qboolean copyt
 
 	AngleVectors( angles, velocity, NULL, NULL );
 	VectorScale( velocity, 150, velocity );
-	velocity[2] += 200 + crandom() * 50;
+	velocity[2] += 200 + Q_crandom() * 50;
 	
 	if ( copytarget )
 	{
@@ -1339,7 +1339,7 @@ be on an entity that hasn't spawned yet.
 ============
 */
 void G_SpawnItem (gentity_t *ent, gitem_t *item) {
-	G_SpawnFloat( "random", "0", &ent->random );
+	G_SpawnFloat( "Q_random", "0", &ent->Q_random );
 	G_SpawnFloat( "wait", "0", &ent->wait );
 
 	RegisterItem( item );
@@ -1494,9 +1494,9 @@ void G_RunItem( gentity_t *ent ) {
 		{
 			ent->s.pos.trType = TR_GRAVITY;
 			ent->s.pos.trTime = level.time;
-			ent->s.pos.trDelta[0] += crandom() * 40.0f; // I dunno, just do this??
-			ent->s.pos.trDelta[1] += crandom() * 40.0f;
-			ent->s.pos.trDelta[2] += random() * 20.0f;
+			ent->s.pos.trDelta[0] += Q_crandom() * 40.0f; // I dunno, just do this??
+			ent->s.pos.trDelta[1] += Q_crandom() * 40.0f;
+			ent->s.pos.trDelta[2] += Q_random() * 20.0f;
 		}
 		else if ( (ent->flags&FL_DROPPED_ITEM) 
 			&& ent->item

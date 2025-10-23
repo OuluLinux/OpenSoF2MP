@@ -1944,7 +1944,7 @@ qboolean PM_SaberKataDone( int curmove = LS_NONE, int newmove = LS_NONE )
 	{//desann and tavion can link up as many attacks as they want
 		return qfalse;
 	}
-	//FIXME: instead of random, apply some sort of logical conditions to whether or 
+	//FIXME: instead of Q_random, apply some sort of logical conditions to whether or 
 	//		not you can chain?  Like if you were completely missed, you can't chain as much, or...?
 	//		And/Or based on FP_SABER_OFFENSE level?  So number of attacks you can chain
 	//		increases with your FP_SABER_OFFENSE skill?
@@ -2346,7 +2346,7 @@ saberMoveName_t PM_AttackForEnemyPos( qboolean allowFB, qboolean allowStabDown )
 			}
 		}
 		else
-		{//pick a random one
+		{//pick a Q_random one
 			if ( Q_irand( 0, 1 ) )
 			{
 				autoMove = LS_A_TR2BL;
@@ -3861,7 +3861,7 @@ saberMoveName_t PM_SaberAttackForMovement( int forwardmove, int rightmove, int c
 				}
 				saberMoveName_t newmove;
 				if ( pm->ps->clientNum && !PM_ControlledByPlayer() && Q_irand( 0, 3 ) )
-				{//use NPC random
+				{//use NPC Q_random
 					newmove = PM_NPCSaberAttackFromQuad( saberMoveData[curmove].endQuad );
 				}
 				else
@@ -3888,7 +3888,7 @@ saberMoveName_t PM_SaberAttackForMovement( int forwardmove, int rightmove, int c
 				}
 				saberMoveName_t newmove;
 				if ( pm->ps->clientNum && !PM_ControlledByPlayer() && Q_irand( 0, 3 ) )
-				{//use NPC random
+				{//use NPC Q_random
 					newmove = PM_NPCSaberAttackFromQuad( saberMoveData[curmove].endQuad );
 				}
 				else
@@ -3960,7 +3960,7 @@ saberMoveName_t PM_SaberAttackForMovement( int forwardmove, int rightmove, int c
 					}
 				}
 				else
-				{//for now, just pick a random attack
+				{//for now, just pick a Q_random attack
 					return ((saberMoveName_t)Q_irand( LS_A_TL2BR, LS_A_T2B ));
 				}
 			}

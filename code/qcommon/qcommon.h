@@ -21,7 +21,7 @@ This file is part of Jedi Academy.
 #define __QCOMMON_H__
 
 #include "stringed_ingame.h"
-#include "../../codeJK2/qcommon/stripPublic.h"
+// #include "../../codeJK2/qcommon/stripPublic.h"  // File doesn't exist in this codebase
 #include "../qcommon/cm_public.h"
 
 

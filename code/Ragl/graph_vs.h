@@ -69,7 +69,7 @@ This file is part of Jedi Academy.
 // object back, it will have a vector of all the nodes that were visited and methods
 // for iterating over that vector to get the path.
 //
-//	for (TestSearch.path_begin(); !TestSearch.path_end(); TestSearch.path_inc())
+	#include "../Ratl/vector_vs.h"
 //	{
 //		sprintf(Buf, "(%d)", TestSearch.path_at());
 //		OutputDebugString(Buf);
@@ -109,7 +109,7 @@ This file is part of Jedi Academy.
 	#include "..\Ratl\array_vs.h"
 #endif
 #if !defined(RATL_VECTOR_VS_INC)
-	#include "..\Ratl\vector_vs.h"
+	#include "../Ratl/vector_vs.h"
 #endif
 #if !defined(RATL_BITS_INC)
 	#include "..\Ratl\bits_vs.h"

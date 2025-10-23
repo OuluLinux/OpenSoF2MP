@@ -133,11 +133,11 @@ void rocketThink( gentity_t *ent )
 		// add crazy drunkenness
 		for ( int i = 0; i < 3; i++ )
 		{
-			newdir[i] += crandom() * ent->random * 0.25f;
+			newdir[i] += Q_crandom() * ent->Q_random * 0.25f;
 		}
 
 		// decay the randomness
-		ent->random *= 0.9f;
+		ent->Q_random *= 0.9f;
 
 		if ( ent->enemy->client
 			&& ent->enemy->client->ps.groundEntityNum != ENTITYNUM_NONE )
@@ -238,8 +238,8 @@ void WP_FireRocket( gentity_t *ent, qboolean alt_fire )
 
 			// if we are fully locked, always take on the enemy.  
 			//	Also give a slight advantage to higher, but not quite full charges.  
-			//	Finally, just give any amount of charge a very slight random chance of locking.
-			if ( dif == 8 || random() * dif > 2 || random() > 0.97f )
+			//	Finally, just give any amount of charge a very slight Q_random chance of locking.
+			if ( dif == 8 || Q_random() * dif > 2 || Q_random() > 0.97f )
 			{
 				missile->enemy = &g_entities[lockEntNum];
 
@@ -274,7 +274,7 @@ void WP_FireRocket( gentity_t *ent, qboolean alt_fire )
 		VectorCopy( forwardVec, missile->movedir );
 
 		missile->e_ThinkFunc = thinkF_rocketThink;
-		missile->random = 1.0f;
+		missile->Q_random = 1.0f;
 		missile->nextthink = level.time + ROCKET_ALT_THINK_TIME;
 	}
 

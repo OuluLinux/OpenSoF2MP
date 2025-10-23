@@ -252,8 +252,8 @@ field_t fields[] = {
 	{"mapname", FOFS(message), F_LSTRING},
 	{"wait", FOFS(wait), F_FLOAT},
 	{"finaltime", FOFS(wait), F_FLOAT},//For dlight
-	{"random", FOFS(random), F_FLOAT},
-	{"FOV", FOFS(random), F_FLOAT},//for ref_tags and trigger_visibles
+	{"Q_random", FOFS(Q_random), F_FLOAT},
+	{"FOV", FOFS(Q_random), F_FLOAT},//for ref_tags and trigger_visibles
 	{"count", FOFS(count), F_INT},
 	{"bounceCount", FOFS(bounceCount), F_INT},
 	{"health", FOFS(health), F_INT},
@@ -338,7 +338,7 @@ field_t fields[] = {
 	{"saberColor", FOFS(NPC_targetname), F_LSTRING},
 	{"saberLeftHand", FOFS(alt_fire), F_INT},
 	{"saberSolo", FOFS(loopAnim), F_INT},
-	{"saberPitch", FOFS(random), F_FLOAT},
+	{"saberPitch", FOFS(Q_random), F_FLOAT},
 	//freaky camera shit
 	{"startRGBA", FOFS(startRGBA), F_VECTOR4},
 	{"finalRGBA", FOFS(finalRGBA), F_VECTOR4},

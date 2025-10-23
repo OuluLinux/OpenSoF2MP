@@ -222,7 +222,7 @@ gentity_t *SelectNearestDeathmatchSpawnPoint( vec3_t from, team_t team ) {
 ================
 SelectRandomDeathmatchSpawnPoint
 
-go to a random point that doesn't telefrag
+go to a Q_random point that doesn't telefrag
 ================
 */
 #define	MAX_SPAWN_POINTS	128

@@ -2,6 +2,7 @@
 #ifndef __QCOMMON_H__
 #define __QCOMMON_H__
 
+#include "platform.h"
 #include "stripPublic.h"
 #include "../qcommon/cm_public.h"
 

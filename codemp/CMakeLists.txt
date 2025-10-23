@@ -126,7 +126,12 @@ if(BuildMPEngine OR BuildMPDed)
 		message("You might need to add some libraries to codemp/CMakeLists.txt or you could get linker errors on non-Windows-OSs.")
 	endif()
 	# Include directories
-	set(MPEngineAndDedIncludeDirectories ${MPDir}) # codemp folder, since includes are not always relative in the files
+	set(MPEngineAndDedIncludeDirectories 
+		${MPDir}  # codemp folder, since includes are not always relative in the files
+		"${CMAKE_SOURCE_DIR}/code"      # For code/ game files
+		"${CMAKE_SOURCE_DIR}/codeJK2"   # For codeJK2/ game files
+		"${CMAKE_SOURCE_DIR}/codeJK2/game"   # For codeJK2 game headers specifically
+	)
 	
 	if(UseInternalZlib)
 		set(MPEngineAndDedIncludeDirectories ${MPEngineAndDedIncludeDirectories} "${MPDir}/zlib")
@@ -363,7 +368,11 @@ if(BuildMPEngine)
 
 	# OpenAL (is optionally included for Windows)
 	if(UseInternalOpenAL)
-		set(MPEngineIncludeDirectories ${MPEngineIncludeDirectories} "${MPDir}/client/OpenAL")
+		set(MPEngineIncludeDirectories 
+			${MPEngineIncludeDirectories} 
+			"${MPDir}/client/OpenAL"
+			"${MPDir}/client"  # For openal/ subdirectory access
+		)
 		# There's a libs/OpenAL32.lib
 		# (mrw) TODO Is this actually required on windows? It is loaded at runtime, should not be linked?
 		find_library(OpenALLibrary NAMES OpenAL32 PATHS "${MPDir}/libs/win32")

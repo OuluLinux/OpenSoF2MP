@@ -632,14 +632,14 @@ void RT_Flying_Strafe( void )
 	vec3_t	end, right, dir;
 	trace_t	tr;
 
-	if ( random() > 0.7f 
+	if ( Q_random() > 0.7f 
 		|| !NPC->enemy 
 		|| !NPC->enemy->client )
 	{
 		// Do a regular style strafe
 		AngleVectors( NPC->client->renderInfo.eyeAngles, NULL, right, NULL );
 
-		// Pick a random strafe direction, then check to see if doing a strafe would be
+		// Pick a Q_random strafe direction, then check to see if doing a strafe would be
 		//	reasonably valid
 		side = ( rand() & 1 ) ? -1 : 1;
 		VectorMA( NPC->currentOrigin, RT_FLYING_STRAFE_DIS * side, right, end );
@@ -668,7 +668,7 @@ void RT_Flying_Strafe( void )
 				}
 			}
 
-			NPCInfo->standTime = level.time + 1000 + random() * 500;
+			NPCInfo->standTime = level.time + 1000 + Q_random() * 500;
 		}
 	}
 	else
@@ -676,13 +676,13 @@ void RT_Flying_Strafe( void )
 		// Do a strafe to try and keep on the side of their enemy
 		AngleVectors( NPC->enemy->client->renderInfo.eyeAngles, dir, right, NULL );
 
-		// Pick a random side
+		// Pick a Q_random side
 		side = ( rand() & 1 ) ? -1 : 1;
 		float	stDis = RT_FLYING_STRAFE_DIS*2.0f;
 		VectorMA( NPC->enemy->currentOrigin, stDis * side, right, end );
 
-		// then add a very small bit of random in front of/behind the player action
-		VectorMA( end, crandom() * 25, dir, end );
+		// then add a very small bit of Q_random in front of/behind the player action
+		VectorMA( end, Q_crandom() * 25, dir, end );
 
 		gi.trace( &tr, NPC->currentOrigin, NULL, NULL, end, NPC->s.number, MASK_SOLID, (EG2_Collision)0, 0 );
 
@@ -721,7 +721,7 @@ void RT_Flying_Strafe( void )
 				}
 			}
 
-			NPCInfo->standTime = level.time + 2500 + random() * 500;
+			NPCInfo->standTime = level.time + 2500 + Q_random() * 500;
 		}
 	}
 }
@@ -859,10 +859,10 @@ void RT_Flying_Think( void )
 		return;
 	}
 
-	if ( NPC->random == 0.0f )
+	if ( NPC->Q_random == 0.0f )
 	{
 		// used to offset seekers around a circle so they don't occupy the same spot.  This is not a fool-proof method.
-		NPC->random = random() * 6.3f; // roughly 2pi
+		NPC->Q_random = Q_random() * 6.3f; // roughly 2pi
 	}
 
 	if ( NPC->enemy && NPC->enemy->health && NPC->enemy->inuse )

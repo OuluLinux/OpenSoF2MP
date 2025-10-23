@@ -44,7 +44,7 @@ Runs the specified effect, can also be targeted at an info_notnull to orient the
 	"target" - direction to aim the effect in, otherwise defaults to up
 	"target2" - uses its target2 when the fx gets triggered
 	"delay"  - how often to call the effect, don't over-do this ( default 200 )
-	"random" - random amount of time to add to delay, ( default 0, 200 = 0ms to 200ms )
+	"Q_random" - Q_random amount of time to add to delay, ( default 0, 200 = 0ms to 200ms )
 	"splashRadius" - only works when damage is checked ( default 16 )
 	"splashDamage" - only works when damage is checked ( default 5 )
 	"soundset"	- bmodel set to use, plays start sound when toggled on, loop sound while on ( doesn't play on a oneshot), and a stop sound when turned off
@@ -66,7 +66,7 @@ void fx_runner_think( gentity_t *ent )
 	AngleVectors( ent->currentAngles, ent->pos3, NULL, NULL );
 	MakeNormalVectors( ent->pos3, ent->pos4, temp ); // there IS a reason this is done...it's so that it doesn't break every effect in the game...
 
-	ent->nextthink = level.time + ent->delay + random() * ent->random;
+	ent->nextthink = level.time + ent->delay + Q_random() * ent->Q_random;
 
 	if ( ent->spawnflags & 4 ) // damage
 	{
@@ -234,7 +234,7 @@ void SP_fx_runner( gentity_t *ent )
 {
 	// Get our defaults
 	G_SpawnInt( "delay", "200", &ent->delay );
-	G_SpawnFloat( "random", "0", &ent->random );
+	G_SpawnFloat( "Q_random", "0", &ent->Q_random );
 	G_SpawnInt( "splashRadius", "16", &ent->splashRadius );
 	G_SpawnInt( "splashDamage", "5", &ent->splashDamage );
 
@@ -315,10 +315,10 @@ void SP_CreateSnow( gentity_t *ent )
 /*QUAKED fx_wind (0 .5 .8) (-16 -16 -16) (16 16 16) NORMAL CONSTANT GUSTING SWIRLING x  FOG LIGHT_FOG
 Generates global wind forces
 
-NORMAL    creates a random light global wind
+NORMAL    creates a Q_random light global wind
 CONSTANT  forces all wind to go in a specified direction
-GUSTING   causes random gusts of wind
-SWIRLING  causes random swirls of wind
+GUSTING   causes Q_random gusts of wind
+SWIRLING  causes Q_random swirls of wind
 
 "angles" the direction for constant wind
 "speed"  the speed for constant wind
@@ -425,7 +425,7 @@ ACID    create acid rain
 
 OUTSIDE_SHAKE  will cause the camera to shake slightly whenever outside
 MISTY_FOG      causes clouds of misty fog to float through the level
-LIGHTNING      causes random bursts of lightning and thunder in the level
+LIGHTNING      causes Q_random bursts of lightning and thunder in the level
 
 The following fields are for lightning:
 "flashcolor"    "200 200 200" (r g b) (values 0.0-255.0)
@@ -655,7 +655,7 @@ default ( 0, 0 )
 spread ( minX minY minZ ) ( maxX maxY maxZ )			
 default: ( -600 -600 -500 ) ( 600 600 550 )
 
-// Set the random range that sets the speed the puffs fall:
+// Set the Q_random range that sets the speed the puffs fall:
 velocity ( minX minY minZ ) ( maxX maxY maxZ )			
 default: ( -15 -15 -20 ) ( 15 15 -70 )
 
@@ -989,7 +989,7 @@ void fx_target_beam_set_debounce( gentity_t *self )
 {
 	if ( self->wait >= FRAMETIME )
 	{
-		self->attackDebounceTime = level.time + self->wait + Q_irand( -self->random, self->random );
+		self->attackDebounceTime = level.time + self->wait + Q_irand( -self->Q_random, self->Q_random );
 	}
 	else if ( self->wait < 0 )
 	{
@@ -997,7 +997,7 @@ void fx_target_beam_set_debounce( gentity_t *self )
 	}
 	else 
 	{
-		self->attackDebounceTime = level.time + FRAMETIME + Q_irand( -self->random, self->random );
+		self->attackDebounceTime = level.time + FRAMETIME + Q_irand( -self->Q_random, self->Q_random );
 	}
 }
 
@@ -1174,7 +1174,7 @@ NO_KNOCKBACK - beam damage does no knockback
  "targetname" - Fires only when used
  "duration" - How many seconds each burst lasts, -1 will make it stay on forever
  "wait" - If always on, how long to wait between blasts, in MILLISECONDS - default/min is 100 (1 frame at 10 fps), -1 means it will never fire again
- "random" - random amount of seconds added to/subtracted from "wait" each firing
+ "Q_random" - Q_random amount of seconds added to/subtracted from "wait" each firing
  "damage" - How much damage to inflict PER FRAME (so probably want it kind of low), default is none
  "target" - ent to point at- you MUST have this.  This can be anything you want, including a moving ent - for static beams, just use info_null
 */
@@ -1185,7 +1185,7 @@ void SP_fx_target_beam( gentity_t *ent )
 
 	ent->speed	*= 1000;
 	ent->wait	*= 1000;
-	ent->random *= 1000;
+	ent->Q_random *= 1000;
 
 	if ( ent->speed < FRAMETIME )
 	{
@@ -1228,7 +1228,7 @@ void SP_fx_target_beam( gentity_t *ent )
   ALT - uses slightly different shader, good if using two layers sort of close together
 
 "radius" - outer radius of cloud layer, (default 2048)
-"random" - inner radius of cloud layer, (default 128) only works for TUBE type
+"Q_random" - inner radius of cloud layer, (default 128) only works for TUBE type
 "wait" - adds curvature as it moves out to the edge of the layer.  ( default 0 ), 1 = small up, 3 = up more, -1 = small down, -3 = down more, etc.
 
 */
@@ -1239,7 +1239,7 @@ void SP_fx_cloudlayer( gentity_t *ent )
 	G_EffectIndex( "world/haze_cache" );
 
 	G_SpawnFloat( "radius", "2048", &ent->radius );
-	G_SpawnFloat( "random", "128", &ent->random );
+	G_SpawnFloat( "Q_random", "128", &ent->Q_random );
 	G_SpawnFloat( "wait", "0", &ent->wait );
 
 	ent->s.eType = ET_CLOUD; // dumb

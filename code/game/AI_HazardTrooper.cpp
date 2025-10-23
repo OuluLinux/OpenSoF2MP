@@ -43,7 +43,7 @@ This file is part of Jedi Academy.
 	#include "..\Ratl\array_vs.h"
 #endif
 #if !defined(RATL_VECTOR_VS_INC)
-	#include "..\Ratl\vector_vs.h"
+	#include "../Ratl/vector_vs.h"
 #endif
 #if !defined(RATL_HANDLE_POOL_VS_INC)
 	#include "..\Ratl\handle_pool_vs.h"
@@ -85,7 +85,7 @@ enum
 extern void G_AddVoiceEvent( gentity_t *self, int event, int speakDebounceTime );
 static void HT_Speech( gentity_t *self, int speechType, float failChance )
 {
-	if ( random() < failChance )
+	if ( Q_random() < failChance )
 	{
 		return;
 	}

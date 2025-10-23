@@ -273,7 +273,7 @@ void Rancor_Move( qboolean visible )
 						STEER::AvoidCollisions(NPC);
 						STEER::DeActivate(NPC, &ucmd);
 					}
-					//let him know he should attack at random out of frustration?
+					//let him know he should attack at Q_random out of frustration?
 					if ( NPCInfo->goalEntity == NPC->enemy )
 					{
 						if ( TIMER_Done( NPC, "attacking" ) 
@@ -929,7 +929,7 @@ void Rancor_Attack( float distance, qboolean doCharge, qboolean aimAtBlockedEnti
 			return;
 		}
 
-		TIMER_Set( NPC, "attacking", NPC->client->ps.legsAnimTimer + random() * 200 );
+		TIMER_Set( NPC, "attacking", NPC->client->ps.legsAnimTimer + Q_random() * 200 );
 	}
 
 	// Need to do delayed damage since the attack animations encapsulate multiple mini-attacks

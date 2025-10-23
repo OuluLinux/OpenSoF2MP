@@ -1085,7 +1085,7 @@ typedef enum //# animNumber_e
 	BOTH_STAND7TOSTAND8,	//# Tavion putting hands on back of chair (cin #11)
 	BOTH_STAND8TOSTAND5,	//# Transition from stand8 to stand5
 	BOTH_STAND9,			//# Kyle's standing idle, no weapon, hands down
-	BOTH_STAND9IDLE1,		//# Kyle's random standing idle
+	BOTH_STAND9IDLE1,		//# Kyle's Q_random standing idle
 	BOTH_STAND5SHIFTWEIGHT,	//# Weightshift from stand5 to side and back to stand5
 	BOTH_STAND5SHIFTWEIGHTSTART,	//# From stand5 to side
 	BOTH_STAND5SHIFTWEIGHTSTOP,		//# From side to stand5

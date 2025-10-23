@@ -224,7 +224,8 @@ surfaceparm <name>
 typedef struct 
 {
 	char	*name;
-	int		clearSolid, surfaceFlags, contents;
+	int		clearSolid, surfaceFlags;
+	unsigned int contents;
 } infoParm_t;
 
 infoParm_t	svInfoParms[] =

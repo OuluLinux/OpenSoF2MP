@@ -653,7 +653,7 @@ It will stretch to the full height of the brush
 
 numPatches - integer number of patches to split the terrain brush into (default 200)
 terxels - integer number of terxels on a patch side (default 4) (2 <= count <= 8)
-seed - integer seed for random terrain generation (default 0)
+seed - integer seed for Q_random terrain generation (default 0)
 textureScale - float scale of texture (default 0.005)
 heightmap - name of heightmap data image to use, located in heightmaps/*.png. (must be PNG format)
 terrainDef - defines how the game textures the terrain (file is base/ext_data/rmg/*.terrain - default is grassyhills)
@@ -760,7 +760,7 @@ void SP_terrain(gentity_t *ent)
 
 	Info_SetValueForKey(temp, "terrainId", va("%d", terrainID));
 
-	// Let the entity know if it is random generated or not
+	// Let the entity know if it is Q_random generated or not
 //	SetIsRandom(common->GetIsRandom());
 
 	// Let the game remember everything
@@ -867,7 +867,7 @@ void camera_die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int
 	{
 		sparks->fxFile = "sparks/spark";
 		sparks->delay = 100;
-		sparks->random = 500;
+		sparks->Q_random = 500;
 		sparks->s.angles[0] = 180;//point down
 		VectorCopy( self->s.origin, sparks->s.origin );
 		SP_fx_runner( sparks );
@@ -1077,10 +1077,10 @@ void Use_Shooter( gentity_t *ent, gentity_t *other, gentity_t *activator )
 	PerpendicularVector( up, dir );
 	CrossProduct( up, dir, right );
 
-	deg = crandom() * ent->random;
+	deg = Q_crandom() * ent->Q_random;
 	VectorMA( dir, deg, up, dir );
 
-	deg = crandom() * ent->random;
+	deg = Q_crandom() * ent->Q_random;
 	VectorMA( dir, deg, right, dir );
 
 	VectorNormalize( dir );
@@ -1110,10 +1110,10 @@ void InitShooter( gentity_t *ent, int weapon ) {
 
 	G_SetMovedir( ent->s.angles, ent->movedir );
 
-	if ( !ent->random ) {
-		ent->random = 1.0;
+	if ( !ent->Q_random ) {
+		ent->Q_random = 1.0;
 	}
-	ent->random = sin( M_PI * ent->random / 180 );
+	ent->Q_random = sin( M_PI * ent->Q_random / 180 );
 	// target might be a moving object, so we can't set movedir for it
 	if ( ent->target ) {
 		G_SetEnemy(ent, G_PickTarget( ent->target ));
@@ -1123,7 +1123,7 @@ void InitShooter( gentity_t *ent, int weapon ) {
 
 /*QUAK-ED shooter_rocket (1 0 0) (-16 -16 -16) (16 16 16)
 Fires at either the target or the current direction.
-"random" the number of degrees of deviance from the taget. (1.0 default)
+"Q_random" the number of degrees of deviance from the taget. (1.0 default)
 */
 void SP_shooter_rocket( gentity_t *ent ) 
 {
@@ -1132,7 +1132,7 @@ void SP_shooter_rocket( gentity_t *ent )
 
 /*QUAK-ED shooter_plasma (1 0 0) (-16 -16 -16) (16 16 16)
 Fires at either the target or the current direction.
-"random" is the number of degrees of deviance from the taget. (1.0 default)
+"Q_random" is the number of degrees of deviance from the taget. (1.0 default)
 */
 void SP_shooter_plasma( gentity_t *ent ) 
 {
@@ -1141,7 +1141,7 @@ void SP_shooter_plasma( gentity_t *ent )
 
 /*QUAK-ED shooter_grenade (1 0 0) (-16 -16 -16) (16 16 16)
 Fires at either the target or the current direction.
-"random" is the number of degrees of deviance from the taget. (1.0 default)
+"Q_random" is the number of degrees of deviance from the taget. (1.0 default)
 */
 void SP_shooter_grenade( gentity_t *ent ) 
 {
@@ -1234,7 +1234,7 @@ speed - how long to take to fade from start to final and final to start.  Also h
 finaltime - how long to hold at final (seconds)
 starttime - how long to hold at start (seconds)
 
-TODO: Add random to speed/radius?
+TODO: Add Q_random to speed/radius?
 */
 void SP_misc_dlight(gentity_t *ent)
 {
@@ -1877,16 +1877,16 @@ void misc_replicator_item_spawn ( gentity_t *self, gentity_t *other, gentity_t *
 }
 
 /*QUAK-ED misc_replicator_item (0.2 0.8 0.2) (-4 -4 0) (4 4 8) 
-When used. this will "spawn" an entity with a random model from the ones provided below...
+When used. this will "spawn" an entity with a Q_random model from the ones provided below...
 
 Using it again removes the item as if it were picked up.
 
-model  - first random model key
-model2  - second random model key
-model3  - third random model key
-model4  - fourth random model key
-model5  - fifth random model key
-model6  - sixth random model key
+model  - first Q_random model key
+model2  - second Q_random model key
+model3  - third Q_random model key
+model4  - fourth Q_random model key
+model5  - fifth Q_random model key
+model6  - sixth Q_random model key
 
 NOTE: do not skip one of these model names, start with the lowest and fill in each next highest one with a value.  A gap will cause the item to not work correctly.
 
@@ -2720,7 +2720,7 @@ void welder_think( gentity_t *self )
 
 	int newBolt;
 	
-	// could alternate between the two... or make it random... ?
+	// could alternate between the two... or make it Q_random... ?
 	newBolt = gi.G2API_AddBolt( &self->ghoul2[self->playerModel], "*flash" );
 //	newBolt = gi.G2API_AddBolt( &self->ghoul2[self->playerModel], "*flash01" );
 
@@ -2931,7 +2931,7 @@ void gas_random_jet( gentity_t *self )
 
 	G_PlayEffect( "env/mini_gasjet", pt );
 
-	self->nextthink = level.time + random() * 16000 + 12000; // do this rarely
+	self->nextthink = level.time + Q_random() * 16000 + 12000; // do this rarely
 }
 
 //------------------------------------------------------------
@@ -2987,7 +2987,7 @@ void SP_misc_gas_tank( gentity_t *ent )
 	ent->e_DieFunc = dieF_misc_model_breakable_die;
 
 	ent->e_ThinkFunc = thinkF_gas_random_jet;
-	ent->nextthink = level.time + random() * 12000 + 6000; // do this rarely
+	ent->nextthink = level.time + Q_random() * 12000 + 6000; // do this rarely
 }
 
 /*QUAKED misc_crystal_crate (1 0 0.25) (-34 -34 0) (34 34 44) NON_SOLID

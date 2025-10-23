@@ -19,7 +19,7 @@ This file is part of Jedi Academy.
 #define __EAXMANH
 
 #define COM_NO_WINDOWS_H
-#include <objbase.h>
+// #include <objbase.h>  // Windows-specific, commented out for Linux
 #include "eax.h"
 
 #ifdef __cplusplus

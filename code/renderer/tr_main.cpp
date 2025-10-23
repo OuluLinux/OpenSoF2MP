@@ -356,7 +356,7 @@ Called by both the front end and the back end
 =================
 */
 void R_RotateForEntity( const trRefEntity_t *ent, const viewParms_t *viewParms,
-					   orientationr_t *or ) {
+					   orientation_t *or ) {
 //	float	glMatrix[16];
 	vec3_t	delta;
 	float	axisLength;

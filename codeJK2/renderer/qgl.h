@@ -17,7 +17,9 @@
 #pragma warning (disable: 4032)
 #pragma warning (disable: 4201)
 #pragma warning (disable: 4214)
+#ifdef _WIN32
 #include <windows.h>
+#endif
 #include <gl/gl.h>
 
 #elif defined( __APPLE__ ) && defined( __MACH__ )
@@ -25,6 +27,9 @@
 #include <MesaGL/gl.h>
 
 #elif defined( __linux__ )
+
+// Include platform.h for Windows type definitions on Linux
+#include "../qcommon/platform.h"
 
 #include <GL/gl.h>
 #include <GL/glx.h>

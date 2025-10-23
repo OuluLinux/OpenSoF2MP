@@ -5,7 +5,12 @@ if(NOT InOpenJK)
 	message(FATAL_ERROR "Use the top-level cmake script!")
 endif(NOT InOpenJK)
 
-set(MPGameIncludeDirectories "${MPDir}")
+set(MPGameIncludeDirectories 
+    "${MPDir}"
+    "${CMAKE_SOURCE_DIR}/code"      # For code/ game files
+    "${CMAKE_SOURCE_DIR}/codeJK2"   # For codeJK2/ game files
+    "${CMAKE_SOURCE_DIR}/codeJK2/game"   # For codeJK2 game headers specifically
+)
 if(WIN32)
 	set(MPGameLibraries "winmm")
 elseif(UNIX AND NOT APPLE)

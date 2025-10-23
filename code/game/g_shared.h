@@ -22,10 +22,12 @@ This file is part of Jedi Academy.
 #include "bg_public.h"
 #include "g_public.h"
 #include "b_public.h"
+#ifndef __linux__
 #include "../Icarus/Stdafx.h"	//need stl
+#endif
 #include "../renderer/tr_types.h"
 #include "../cgame/cg_public.h"
-#include "G_Vehicles.h"
+// #include "G_Vehicles.h"  // File doesn't exist in this codebase
 #include "hitlocs.h"
 #include "bset.h"
 
@@ -669,7 +671,7 @@ Ghoul2 Insert End
 
 //Timing variables, counters and debounce times
 	float		wait;
-	float		random;
+	float		Q_random;
 	int			delay;
 	qboolean	alt_fire;
 	int			count;
@@ -770,6 +772,10 @@ Ghoul2 Insert End
 
 //==========================================================================================
 	
+// Forward declaration for Vehicle_t
+struct Vehicle_s;
+typedef struct Vehicle_s Vehicle_t;
+
 //FIELDS USED EXCLUSIVELY BY SPECIFIC CLASSES OF ENTITIES
 	// Vehicle information.
 	// The vehicle object.

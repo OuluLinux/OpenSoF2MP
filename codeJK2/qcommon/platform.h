@@ -80,7 +80,6 @@ typedef void* HRSRC;
 typedef void* HSTR;
 typedef void* HTASK;
 typedef void* HWINSTA;
-typedef void* HKL;
 
 // Win32 constants
 #ifndef TRUE

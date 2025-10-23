@@ -26,6 +26,7 @@
 #include "qcommon/disablewarnings.h"
 
 #include "game/teams.h" //npc team stuff
+#include "game/sof2mp_types.h"
 
 #define MAX_WORLD_COORD		( 64 * 1024 )
 #define MIN_WORLD_COORD		( -64 * 1024 )
@@ -463,6 +464,13 @@ float FloatSwap( const float *f );
 // ================================================================
 // TYPE DEFINITIONS
 // ================================================================
+
+// Avoid conflict with C++17 std::byte by undefining it first
+#ifdef __cplusplus
+#ifdef byte
+#undef byte
+#endif
+#endif
 
 typedef unsigned char 		byte;
 typedef unsigned short		word;
@@ -1728,6 +1736,119 @@ typedef struct playerState_s {
 	// Timers 
 	int			grenadeTimer;
 	int			respawnTimer;
+	// Added fields for SOF2MP compatibility
+	int			powerups[16];							// powerup timers
+	saberInfo_t	saber[2];							// saber info
+	qboolean	saberInFlight;						// saber thrown
+	qboolean	saberActive;							// saber on
+	int			saberEntityNum;						// saber entity number
+	float		saberEntityDist;						// distance to saber
+	int			saberThrowTime;						// time saber was thrown
+	int			saberEntityState;						// saber entity state
+	int			saberDamageDebounceTime;				// saber damage debounce
+	int			saberHitWallSoundDebounceTime;		// sound debounce
+	int			saberEventFlags;						// saber event flags
+	int			saberBlockingTime;						// blocking time
+	int			saberBounceMove;						// bounce move
+	short		saberMove;							// current saber move
+	short		saberMoveNext;						// next saber move
+	short		saberBlocking;						// blocking state
+	short		saberBlocked;						// blocked state
+	short		leanStopDebounceTime;				// lean debounce
+	float		saberLength;							// saber length
+	float		saberLengthMax;						// max saber length
+	saber_colors_t saberColor;						// saber color
+	qboolean	dualSabers;							// dual sabers
+	qboolean	saberHolstered;						// saber holstered
+	qboolean	dualBlade;							// dual blade mode
+	int			saberLockEnemy;						// saber lock enemy
+	int			saberLockTime;						// saber lock time
+	int			saberAttackChainCount;				// attack chain count
+	int			vehicleModel;							// vehicle model override
+	int			viewEntity;							// view entity override
+	qboolean	isJediMaster;						// jedi master flag
+	qboolean	duelInProgress;						// duel in progress
+	int			duelIndex;							// duel index
+	int			duelTime;							// duel time
+	qboolean	trueJedi;							// true jedi
+	qboolean	trueNonJedi;							// non jedi
+	int			saberMoveQuota;						// saber move quota
+	int			saberMovePool;						// saber move pool
+	int			forcePowerRegenRate;				// force power regen rate
+	int			forcePowerRegenAmount;				// force power regen amount
+	int			saberStylesKnown;						// saber styles known
+	qboolean	ikStatus;							// ik status
+	int			heldClient;							// held client
+	int			heldByClient;							// held by client
+	int			heldByBolt;							// held by bolt
+	int			heldByBone;							// held by bone
+	int			vehTurnaroundIndex;					// vehicle turnaround index
+	int			vehTurnaroundTime;					// vehicle turnaround time
+	int			brokenLimbs;							// broken limbs
+	int			electrifyTime;						// electrify time
+	int			taunting;							// taunting
+	float		jumpZStart;							// jump z start
+	vec3_t	moveDir;							// move direction
+	int			waterHeightLevel;						// water height level
+	int			forceRestricted;						// force restricted
+	int			hasDetPackPlanted;					// has detpack planted
+	int			isCamping;							// camping
+	int			plantKillEmAll;						// plant kill all
+	int			forceWeaponSelect;						// force weapon selection
+	int			m_iVehicleNum;						// vehicle number
+	int			forceSide;							// force side
+	int			forcePowersActive;					// force powers active
+	int			forcePowerSelected;					// force power selected
+	int			forcePowersKnown;					// force powers known
+	int			forcePower;							// force power
+	int			forcePowerMax;						// max force power
+	int			forcePowerRegenDebounceTime;		// force power regen debounce
+	int			forcePowerLevel[16];					// force power levels
+	float		forceJumpZStart;						// force jump z start
+	float		forceJumpCharge;						// force jump charge
+	int			forceGripEntityNum;					// force grip entity number
+	vec3_t	forceGripOrg;						// force grip origin
+	int			forceHealCount;						// force heal count
+	int			forceAllowDeactivateTime;			// force allow deactivate time
+	int			forceRageDrainTime;					// force rage drain time
+	int			forceDrainEntNum;						// force drain entity number
+	float		forceDrainTime;						// force drain time
+	int			forcePowersForced;					// force powers forced
+	int			pullAttackEntNum;					// pull attack entity number
+	int			pullAttackTime;						// pull attack time
+	int			lastKickedEntNum;					// last kicked entity number
+	int			forcePowerDuration[16];				// force power durations
+	int			forcePowerDebounce[16];				// force power debounces
+	int			forceRageRecoveryTime;				// force rage recovery time
+	int			forceDodgeCount;						// force dodge count
+	int			forcePanicSaveTime;					// force panic save time
+	int			forceFuryTime;						// force fury time
+	int			forceGripCripple;					// force grip cripple
+	int			forceGripBeingGripped;				// force grip being gripped
+	int			forceGripDamageDebounce;			// force grip damage debounce
+	int			forceGripUseTime;					// force grip use time
+	int			forceDrainEntityNum;					// force drain entity number
+	vec3_t	forceDrainOrg;						// force drain origin
+	int			forceSpeedRecoveryTime;				// force speed recovery time
+	int			forceSpeedDuration;						// force speed duration
+	int			forceGripQuickKeyPress;				// force grip quick key press
+	int			forceRageDuration;						// force rage duration
+	int			forceRageRecovery;						// force rage recovery
+	int			forceProtectDuration;					// force protect duration
+	int			forceAbsorbDuration;					// force absorb duration
+	int			forceForceReplentishDebounce;		// force replenish debounce
+	int			forceLightsaberRuneUse;			// force lightsaber rune use
+	int			saberAnimLevel;						// saber animation level
+
+	// Additional missing members
+	int			otherSoundTime;				// other sound time
+	int			otherSoundLen;				// other sound length
+	int			footstepTime;				// footstep time
+	int			weaponChargeTime;			// weapon charge time
+	int			rocketLockTime;				// rocket lock time
+	int			rocketLastValidTime;		// rocket last valid time
+
+	forceData_t	fd;							// force data
 } playerState_t;
 
 

@@ -259,7 +259,7 @@ void Interrogator_Strafe( void )
 
 	AngleVectors( NPC->client->renderInfo.eyeAngles, NULL, right, NULL );
 
-	// Pick a random strafe direction, then check to see if doing a strafe would be
+	// Pick a Q_random strafe direction, then check to see if doing a strafe would be
 	//	reasonable valid
 	dir = ( rand() & 1 ) ? -1 : 1;
 	VectorMA( NPC->currentOrigin, HUNTER_STRAFE_DIS * dir, right, end );
@@ -289,7 +289,7 @@ void Interrogator_Strafe( void )
 
 		// Set the strafe start time 
 		NPC->fx_time = level.time;
-		NPCInfo->standTime = level.time + 3000 + random() * 500;
+		NPCInfo->standTime = level.time + 3000 + Q_random() * 500;
 	}
 }
 

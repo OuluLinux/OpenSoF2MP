@@ -3,7 +3,9 @@
 #pragma warning( disable : 4786) 
 #pragma warning( disable : 4100) 
 #pragma warning( disable : 4663) 
+#ifdef _WIN32
 #include <windows.h>
+#endif
 
 #include "..\smartheap\smrtheap.h"
 #include "../game/q_shared.h"

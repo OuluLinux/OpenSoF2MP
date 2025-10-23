@@ -222,14 +222,14 @@ vec3_t	bytedirs[NUMVERTEXNORMALS] =
 /*
 erandom
 
-This function produces a random number with a exponential
+This function produces a Q_random number with a exponential
 distribution and the specified mean value.
 */
 float erandom( float mean ) {
 	float	r;
 
 	do {
-		r = random();
+		r = Q_random();
 	} while ( r == 0.0 );
 
 	return -mean * log( r );

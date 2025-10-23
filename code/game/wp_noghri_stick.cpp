@@ -36,8 +36,8 @@ void WP_FireNoghriStick( gentity_t *ent )
 	{//force sight 2+ gives perfect aim
 		//FIXME: maybe force sight level 3 autoaims some?
 		// add some slop to the main-fire direction
-		angs[PITCH] += ( crandom() * (BLASTER_NPC_SPREAD+(6-ent->NPC->currentAim)*0.25f));//was 0.5f
-		angs[YAW]	+= ( crandom() * (BLASTER_NPC_SPREAD+(6-ent->NPC->currentAim)*0.25f));//was 0.5f
+		angs[PITCH] += ( Q_crandom() * (BLASTER_NPC_SPREAD+(6-ent->NPC->currentAim)*0.25f));//was 0.5f
+		angs[YAW]	+= ( Q_crandom() * (BLASTER_NPC_SPREAD+(6-ent->NPC->currentAim)*0.25f));//was 0.5f
 	}
 
 	AngleVectors( angs, dir, NULL, NULL );

@@ -46,7 +46,7 @@ struct snapshot_s
 
 	int				serverTime;		// server time the message is valid for (in msec)
 
-	byte			areamask[MAX_MAP_AREA_BYTES];		// portalarea visibility bits
+	::byte			areamask[MAX_MAP_AREA_BYTES];		// portalarea visibility bits
 
 	int				cmdNum;			// the next cmdNum the server is expecting
 									// client side prediction should start with this cmd
@@ -341,4 +341,4 @@ Ghoul2 Insert End
 
 //----------------------------------------------
 
-#endif _CG_PUBLIC_H
+#endif

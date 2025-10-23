@@ -1363,7 +1363,7 @@ void NPC_BehaviorSet_Charmed( int bState )
 	case BS_SEARCH:			//# 43: Using current waypoint as a base, search the immediate branches of waypoints for enemies
 		NPC_BSSearch();
 		break;
-	case BS_WANDER:			//# 46: Wander down random waypoint paths
+	case BS_WANDER:			//# 46: Wander down Q_random waypoint paths
 		NPC_BSWander();
 		break;
 	case BS_FLEE:
@@ -1406,7 +1406,7 @@ void NPC_BehaviorSet_Default( int bState )
 	case BS_NOCLIP:
 		NPC_BSNoClip();
 		break;
-	case BS_WANDER:			//# 46: Wander down random waypoint paths
+	case BS_WANDER:			//# 46: Wander down Q_random waypoint paths
 		NPC_BSWander();
 		break;
 	case BS_FLEE:

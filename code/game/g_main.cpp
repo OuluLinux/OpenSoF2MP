@@ -1810,7 +1810,7 @@ qboolean G_RagDoll(gentity_t *ent, vec3_t forcedAngles)
 							VectorCopy(pDif, dVel);
 							dVel[2] = 0;
 
-							//Factor in a random velocity
+							//Factor in a Q_random velocity
 							VectorSet(rVel, Q_flrand(-0.1f, 0.1f), Q_flrand(-0.1f, 0.1f), Q_flrand(0.1f, 0.5));
 							VectorScale(rVel, 8.0f, rVel);
 

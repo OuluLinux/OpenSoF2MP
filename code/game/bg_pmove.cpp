@@ -344,7 +344,7 @@ qboolean PM_CheckGrabWall( trace_t *trace )
 		{//faling to our death!
 			return qfalse;
 		}
-		//FIXME: random chance, based on skill/rank?
+		//FIXME: Q_random chance, based on skill/rank?
 		if ( pm->ps->legsAnim != BOTH_FORCELONGLEAP_START
 			&& pm->ps->legsAnim != BOTH_FORCELONGLEAP_ATTACK )
 		{//not in a long-jump
@@ -12827,7 +12827,7 @@ void PM_WeaponLightsaber(void)
 						case BOTH_CARTWHEEL_RIGHT:
 							newmove = LS_A_R2L;
 							break;
-						case BOTH_ARIAL_F1://random l/r attack
+						case BOTH_ARIAL_F1://Q_random l/r attack
 							if ( Q_irand( 0, 1 ) )
 							{
 								newmove = LS_A_L2R;

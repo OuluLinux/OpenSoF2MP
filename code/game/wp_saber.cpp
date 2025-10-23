@@ -5322,7 +5322,7 @@ void WP_SaberDamageTrace( gentity_t *ent, int saberNum, int bladeNum )
 									&& ent->client->ps.forcePowerLevel[FP_SABER_DEFENSE] < FORCE_LEVEL_2 
 									//&& (ent->s.number||g_saberRealisticCombat->integer) 
 									&& Q_irand( 0, hitOwner->client->ps.SaberDisarmBonus( 0 ) ) > 0 
-									&& (hitOwner->s.number || g_saberAutoBlocking->integer || !Q_irand( 0, 2 )) )//if player defending and autoblocking is on, this is less likely to happen, so don't do the random check
+									&& (hitOwner->s.number || g_saberAutoBlocking->integer || !Q_irand( 0, 2 )) )//if player defending and autoblocking is on, this is less likely to happen, so don't do the Q_random check
 								{//knocked the saber right out of his hand! (never happens to player)
 									//Get a good velocity to send the saber in based on my parry move
 									vec3_t	throwDir;
@@ -5630,13 +5630,13 @@ void WP_SaberDamageTrace( gentity_t *ent, int saberNum, int bladeNum )
 					}
 					knockAway -= hitOwner->client->ps.SaberDisarmBonus( 0 );
 				}
-				if ( Q_irand( 0, knockAway ) <= 0 || //random
+				if ( Q_irand( 0, knockAway ) <= 0 || //Q_random
 						( hitOwner 
 							&& hitOwner->client 
 							&& hitOwner->NPC 
 							&& (hitOwner->NPC->aiFlags&NPCAI_BOSS_CHARACTER)
 						) //or if blocked by a Boss character FIXME: or base on defense level?
-					)//FIXME: player should not auto-block a flying saber, let him override the parry with an attack to knock the saber from the air, rather than this random chance
+					)//FIXME: player should not auto-block a flying saber, let him override the parry with an attack to knock the saber from the air, rather than this Q_random chance
 				{//knock it aside and turn it off
 					if ( !g_saberNoEffects )
 					{
@@ -7480,7 +7480,7 @@ void WP_SaberBlock( gentity_t *saber, vec3_t hitloc, qboolean missileBlock )
 		}
 	}
 	else
-	{	// The lower half is a bit iffy as far as block coverage.  Pick one of the "low" ones at random.
+	{	// The lower half is a bit iffy as far as block coverage.  Pick one of the "low" ones at Q_random.
 		if (Q_irand(0,1))
 		{
 			playerent->client->ps.saberBlocked = BLOCKED_LOWER_RIGHT;

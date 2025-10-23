@@ -58,7 +58,7 @@ This file is part of Jedi Academy.
 #define SVF_NO_BASIC_SOUNDS		0x10000000	// Don't load basic custom sound set
 #define SVF_NO_COMBAT_SOUNDS	0x20000000	// Don't load combat custom sound set
 #define SVF_NO_EXTRA_SOUNDS		0x40000000	// Don't load extra custom sound set
-#define SVF_MOVER_ADJ_AREA_PORTALS	0x80000000	// For scripted movers only- must *explicitly instruct* them to affect area portals
+#define SVF_MOVER_ADJ_AREA_PORTALS	0x80000000U	// For scripted movers only- must *explicitly instruct* them to affect area portals
 //===============================================================
 
 //rww - RAGDOLL_BEGIN

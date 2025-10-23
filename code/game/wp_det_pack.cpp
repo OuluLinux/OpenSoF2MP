@@ -123,7 +123,7 @@ void WP_FireDetPack( gentity_t *ent, qboolean alt_fire )
 				{
 					VectorCopy( found->currentOrigin, found->s.origin );
 					found->e_ThinkFunc = thinkF_WP_Explode;
-					found->nextthink = level.time + 100 + random() * 100;
+					found->nextthink = level.time + 100 + Q_random() * 100;
 					G_Sound( found, G_SoundIndex( "sound/weapons/detpack/warning.wav" ));
 
 					// would be nice if this actually worked?

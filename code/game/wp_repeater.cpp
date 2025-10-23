@@ -169,14 +169,14 @@ void WP_FireRepeater( gentity_t *ent, qboolean alt_fire )
 				  ent->client->NPC_class == CLASS_SWAMPTROOPER ||
 				  ent->client->NPC_class == CLASS_SHADOWTROOPER ) )
 			{
-				angs[PITCH] += ( crandom() * (REPEATER_NPC_SPREAD+(6-ent->NPC->currentAim)*0.25f) );
-				angs[YAW]	+= ( crandom() * (REPEATER_NPC_SPREAD+(6-ent->NPC->currentAim)*0.25f) );
+				angs[PITCH] += ( Q_crandom() * (REPEATER_NPC_SPREAD+(6-ent->NPC->currentAim)*0.25f) );
+				angs[YAW]	+= ( Q_crandom() * (REPEATER_NPC_SPREAD+(6-ent->NPC->currentAim)*0.25f) );
 			}
 			else
 			{
 				// add some slop to the alt-fire direction
-				angs[PITCH] += crandom() * REPEATER_SPREAD;
-				angs[YAW]	+= crandom() * REPEATER_SPREAD;
+				angs[PITCH] += Q_crandom() * REPEATER_SPREAD;
+				angs[YAW]	+= Q_crandom() * REPEATER_SPREAD;
 			}
 		}
 

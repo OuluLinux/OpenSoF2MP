@@ -24,7 +24,7 @@ This file is part of Jedi Academy.
 //
 // The rail system is intended to provide a means for generating moving entities along
 // tracks of varying speed and direction.  The entities are pulled from the map based
-// upon their targets and recycled in random positions and order
+// upon their targets and recycled in Q_random positions and order
 //
 ////////////////////////////////////////////////////////////////////////////////////////
 #include "g_headers.h"
@@ -49,7 +49,7 @@ class	CRailMover;
 	#include "..\Ratl\array_vs.h"
 #endif
 #if !defined(RATL_VECTOR_VS_INC)
-	#include "..\Ratl\vector_vs.h"
+	#include "../Ratl/vector_vs.h"
 #endif
 #if !defined(RAVL_VEC_INC)
 	#include "..\Ravl\CVec.h"
@@ -69,7 +69,7 @@ using dllNamespace::hstring;
 #endif
 
 ////////////////////////////////////////////////////////////////////////////////////////
-// Constants
+	#include "../Ratl/vector_vs.h"
 ////////////////////////////////////////////////////////////////////////////////////////
 #define		MAX_TRACKS			4
 #define		MAX_LANES			8

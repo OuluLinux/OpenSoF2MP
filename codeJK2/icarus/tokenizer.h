@@ -34,7 +34,11 @@ This file is part of Jedi Knight 2.
 
 using namespace std;
 
+#ifdef _WIN32
 #include <windows.h>
+#else
+#include "../qcommon/platform.h"
+#endif
 
 typedef unsigned char byte;
 typedef unsigned short word;

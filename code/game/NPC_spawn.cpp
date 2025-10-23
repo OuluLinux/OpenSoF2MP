@@ -1531,8 +1531,8 @@ gentity_t *NPC_Spawn_Do( gentity_t *ent, qboolean fullSpawnNow )
 
 	if ( ent->NPC_type == NULL ) 
 	{
-		ent->NPC_type = "random";
-		newent->NPC_type = "random";
+		ent->NPC_type = "Q_random";
+		newent->NPC_type = "Q_random";
 	}
 	else
 	{
@@ -2090,7 +2090,7 @@ SHY - Spawner is shy
 SAFE - Won't spawn if an entity is within 64 units
 
 "noVisTime" - how long to wait after spawning/last being seen by the player beforw blowing ourselves up (default is 10 seconds)
-"skin" - which skin to set "red" for example - If no skin it is random
+"skin" - which skin to set "red" for example - If no skin it is Q_random
 */
 void NPC_VehicleSpawnUse( gentity_t *self, gentity_t *other, gentity_t *activator )
 {
@@ -2494,7 +2494,7 @@ void SP_NPC_MorganKatarn( gentity_t *self)
 /*QUAKED NPC_Jedi(1 0 0) (-16 -16 -24) (16 16 40) TRAINER MASTER RANDOM x CEILING CINEMATIC NOTSOLID STARTINSOLID SHY
 TRAINER - Special Jedi- instructor
 MASTER - Special Jedi- master
-RANDOM - creates a random Jedi student using the available player models/skins (excludes the current model of the player)
+RANDOM - creates a Q_random Jedi student using the available player models/skins (excludes the current model of the player)
 CEILING - Sticks to the ceiling until he sees an enemy or takes pain
 CINEMATIC - Will spawn with no default AI (BS_CINEMATIC)
 NOTSOLID - Starts not solid
@@ -2509,7 +2509,7 @@ void SP_NPC_Jedi( gentity_t *self)
 	if(!self->NPC_type)
 	{
 		if ( self->spawnflags & 4 )
-		{//random!
+		{//Q_random!
 			int sanityCheck = 20;	//just in case
 			while ( sanityCheck-- )
 			{

@@ -2,6 +2,10 @@ cmake_minimum_required(VERSION 3.10)
 # For checks in subdirectories
 set(InOpenJK TRUE)
 
+# Set C++ standard to C++14 to avoid std::byte conflicts
+set(CMAKE_CXX_STANDARD 14)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 #    Project name
 project("OpenJK")
 

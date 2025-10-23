@@ -1233,7 +1233,7 @@ static void Jedi_CheckDecreaseSaberAnimLevel( void )
 		if ( TIMER_Done( NPC, "saberLevelDebounce" ) && !Q_irand( 0, 10 ) )
 		{
 			//Jedi_AdjustSaberAnimLevel( NPC, (NPC->client->ps.saberAnimLevel-1) );//drop
-			Jedi_AdjustSaberAnimLevel( NPC, Q_irand( SS_FAST, SS_STRONG ));//random
+			Jedi_AdjustSaberAnimLevel( NPC, Q_irand( SS_FAST, SS_STRONG ));//Q_random
 			TIMER_Set( NPC, "saberLevelDebounce", Q_irand( 3000, 10000 ) );
 		}
 	}
@@ -2004,7 +2004,7 @@ static qboolean Jedi_Strafe( int strafeTimeMin, int strafeTimeMax, int nextStraf
 	if ( TIMER_Done( NPC, "strafeLeft" ) && TIMER_Done( NPC, "strafeRight" ) )
 	{
 		qboolean strafed = qfalse;
-		//TODO: make left/right choice a tactical decision rather than random:
+		//TODO: make left/right choice a tactical decision rather than Q_random:
 		//		try to keep own back away from walls and ledges, 
 		//		try to keep enemy's back to a ledge or wall
 		//		Maybe try to strafe toward designer-placed "safe spots" or "goals"?
@@ -3883,7 +3883,7 @@ static qboolean Jedi_SaberBlock( void )
 	
 	/*
 	if ( NPCInfo->rank < RANK_LT_JG && Q_irand( 0, (2 - g_spskill->integer) ) )
-	{//lower rank reborn have a random chance of not doing it at all
+	{//lower rank reborn have a Q_random chance of not doing it at all
 		NPC->client->ps.forcePowerDebounce[FP_SABER_DEFENSE] = level.time + 300;
 		return qfalse;
 	}
@@ -4411,7 +4411,7 @@ static void Jedi_EvasionSaber( vec3_t enemy_movedir, float enemy_dist, vec3_t en
 									ucmd.forwardmove = -127;
 									VectorClear( NPC->client->ps.moveDir );
 								}
-								//FIXME: if this jump is cleared, we can't block... so pick a random lower block?
+								//FIXME: if this jump is cleared, we can't block... so pick a Q_random lower block?
 								if ( Q_irand( 0, 1 ) )//FIXME: make intelligent
 								{
 									NPC->client->ps.saberBlocked = BLOCKED_LOWER_RIGHT;

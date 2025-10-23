@@ -47,7 +47,7 @@ If an item is the target of another entity, it will spawn as normal, use INVISIB
 An item fires all of its targets when it is picked up.  If the toucher can't carry it, the targets won't be fired.
 
 "wait"	override the default wait before respawning.  -1 = never respawn automatically, which can be used with targeted spawning.
-"random" random number of plus or minus seconds varied from the respawn time
+"Q_random" Q_random number of plus or minus seconds varied from the respawn time
 "count" override quantity or duration on most items.
 "team" only this team can pick it up
 	"player"

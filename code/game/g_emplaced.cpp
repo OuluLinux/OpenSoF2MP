@@ -243,7 +243,7 @@ void eweb_die( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, int d
 	if ( ent )
 	{
 		ent->delay = 200;
-		ent->random = 100;
+		ent->Q_random = 100;
 
 		ent->fxID = G_EffectIndex( "emplaced/dead_smoke" );
 
@@ -457,7 +457,7 @@ void SP_emplaced_eweb( gentity_t *ent )
 	G_SpawnInt( "health", "250", &ent->health );
 	G_SpawnInt( "splashDamage", "40", &ent->splashDamage );
 	G_SpawnInt( "splashRadius", "100", &ent->splashRadius );
-	G_SpawnFloat( "delay", "200", &ent->random ); // NOTE: spawning into a different field!!
+	G_SpawnFloat( "delay", "200", &ent->Q_random ); // NOTE: spawning into a different field!!
 	G_SpawnFloat( "wait", "800", &ent->wait );
 
 	ent->max_health = ent->health;
@@ -743,8 +743,8 @@ void emplaced_gun_die( gentity_t *self, gentity_t *inflictor, gentity_t *attacke
 	vec3_t ugly;
 
 	ugly[YAW] = 4;
-	ugly[PITCH] = self->lastAngles[PITCH] * 0.8f + crandom() * 6;
-	ugly[ROLL] = crandom() * 7;
+	ugly[PITCH] = self->lastAngles[PITCH] * 0.8f + Q_crandom() * 6;
+	ugly[ROLL] = Q_crandom() * 7;
 	gi.G2API_SetBoneAnglesIndex( &self->ghoul2[self->playerModel], self->lowerLumbarBone, ugly, BONE_ANGLES_POSTMULT, POSITIVE_Y, POSITIVE_Z, POSITIVE_X, NULL, 0, 0 ); 
 
 	VectorCopy( self->currentOrigin,  org );
@@ -758,7 +758,7 @@ void emplaced_gun_die( gentity_t *self, gentity_t *inflictor, gentity_t *attacke
 	if ( ent )
 	{
 		ent->delay = 200;
-		ent->random = 100;
+		ent->Q_random = 100;
 
 		ent->fxID = G_EffectIndex( "emplaced/dead_smoke" );
 
@@ -822,7 +822,7 @@ void SP_emplaced_gun( gentity_t *ent )
 	G_SpawnInt( "health", "250", &ent->health );
 	G_SpawnInt( "splashDamage", "80", &ent->splashDamage );
 	G_SpawnInt( "splashRadius", "128", &ent->splashRadius );
-	G_SpawnFloat( "delay", "200", &ent->random ); // NOTE: spawning into a different field!!
+	G_SpawnFloat( "delay", "200", &ent->Q_random ); // NOTE: spawning into a different field!!
 	G_SpawnFloat( "wait", "800", &ent->wait );
 
 	ent->max_health = ent->health;

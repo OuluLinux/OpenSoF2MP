@@ -1,8 +1,14 @@
 #ifndef __SOCKETS_H
 #define __SOCKETS_H
 
+#ifdef _WIN32
 #include <windows.h>
 #include <winsock.h>
+#else
+#include <sys/socket.h>
+#include <netinet/in.h>
+#include <arpa/inet.h>
+#endif
 #include "buffer.h"
 
 class cSocket

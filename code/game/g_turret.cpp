@@ -53,7 +53,7 @@ void TurretPain( gentity_t *self, gentity_t *inflictor, gentity_t *attacker, con
 	if ( mod == MOD_DEMP2 || mod == MOD_DEMP2_ALT )
 	{
 		// DEMP2 makes the turret stop shooting for a bit..and does extra feedback
-		self->attackDebounceTime = level.time + 800 + random() * 500;
+		self->attackDebounceTime = level.time + 800 + Q_random() * 500;
 		G_PlayEffect( "sparks/spark_exp_nosnd", point, dir );
 	}
 
@@ -173,11 +173,11 @@ static void turret_fire ( gentity_t *ent, vec3_t start, vec3_t dir )
 
 	VectorMA( start, -START_DIS, dir, org ); // dumb....
 
-	if ( ent->random )
+	if ( ent->Q_random )
 	{
 		vectoangles( dir, ang );
-		ang[PITCH] += Q_flrand( -ent->random, ent->random );
-		ang[YAW] += Q_flrand( -ent->random, ent->random );
+		ang[PITCH] += Q_flrand( -ent->Q_random, ent->Q_random );
+		ang[YAW] += Q_flrand( -ent->Q_random, ent->Q_random );
 		AngleVectors( ang, dir, NULL, NULL );
 	}
 
@@ -636,7 +636,7 @@ void turret_base_think( gentity_t *self )
 	else
 	{
 		// keep our enemy for a minimum of 2 seconds from now
-		self->bounceCount = level.time + 2000 + random() * 150;
+		self->bounceCount = level.time + 2000 + Q_random() * 150;
 	}
 
 	turret_aim( self );
@@ -933,9 +933,9 @@ void finish_spawning_turret( gentity_t *base )
 	G_SpawnFloat( "shotspeed", "0", &base->mass ); 
 	if ( (base->spawnflags&SPF_TURRETG2_TURBO) )
 	{
-		if ( !base->random )
+		if ( !base->Q_random )
 		{//error worked into projectile direction
-			base->random = 2.0f;
+			base->Q_random = 2.0f;
 		}
 
 		if ( !base->mass )
@@ -957,7 +957,7 @@ void finish_spawning_turret( gentity_t *base )
 		// How quickly to fire
 		if ( !base->wait )
 		{
-			base->wait = 500;// + random() * 500;
+			base->wait = 500;// + Q_random() * 500;
 		}
 
 		if ( !base->splashDamage )
@@ -996,8 +996,8 @@ void finish_spawning_turret( gentity_t *base )
 	}
 	else
 	{
-		// this is a random time offset for the no-enemy-search-around-mode
-		base->count = random() * 9000;
+		// this is a Q_random time offset for the no-enemy-search-around-mode
+		base->count = Q_random() * 9000;
 
 		if ( !base->health )
 		{
@@ -1013,7 +1013,7 @@ void finish_spawning_turret( gentity_t *base )
 		// How quickly to fire
 		if ( !base->wait )
 		{
-			base->wait = 150 + random() * 55;
+			base->wait = 150 + Q_random() * 55;
 		}
 
 		if ( !base->splashDamage )
@@ -1546,7 +1546,7 @@ static qboolean pas_find_enemies( gentity_t *self )
 					G_Sound( self, G_SoundIndex( "sound/chars/turret/startup.wav" ));
 
 					// Wind up turrets for a bit
-					self->attackDebounceTime = level.time + 900 + random() * 200;
+					self->attackDebounceTime = level.time + 900 + Q_random() * 200;
 				}
 
 				G_SetEnemy( self, target );
@@ -1574,7 +1574,7 @@ void pas_adjust_enemy( gentity_t *ent )
 	{
 		keep = qfalse;
 	}
-	else// if ( random() > 0.5f )
+	else// if ( Q_random() > 0.5f )
 	{
 		// do a trace every now and then.
 		mdxaBone_t	boltMatrix;
@@ -1610,7 +1610,7 @@ void pas_adjust_enemy( gentity_t *ent )
 
 	if ( keep )
 	{
-		ent->bounceCount = level.time + 500 + random() * 150;
+		ent->bounceCount = level.time + 500 + Q_random() * 150;
 	}
 	else if ( ent->bounceCount < level.time ) // don't ping pong on and off
 	{
@@ -1662,7 +1662,7 @@ void pas_think( gentity_t *ent )
 	vec3_t		desiredAngles;
 
 	ent->speed = AngleNormalize360( ent->speed );
-	ent->random = AngleNormalize360( ent->random );
+	ent->Q_random = AngleNormalize360( ent->Q_random );
 
 	if ( ent->enemy )
 	{
@@ -1682,7 +1682,7 @@ void pas_think( gentity_t *ent )
 		vectoangles( enemyDir, desiredAngles );
 
 		diffYaw = AngleSubtract( ent->speed, desiredAngles[YAW] );
-		diffPitch = AngleSubtract( ent->random, desiredAngles[PITCH] );
+		diffPitch = AngleSubtract( ent->Q_random, desiredAngles[PITCH] );
 	}
 	else
 	{
@@ -1714,17 +1714,17 @@ void pas_think( gentity_t *ent )
 		if ( fabs(diffPitch) > 4.0f )
 		{
 			// cap max speed
-			ent->random += (diffPitch > 0.0f) ? -4.0f : 4.0f;
+			ent->Q_random += (diffPitch > 0.0f) ? -4.0f : 4.0f;
 		}
 		else
 		{
 			// small enough
-			ent->random -= diffPitch;
+			ent->Q_random -= diffPitch;
 		}
 	}
 
 	// the bone axes are messed up, so hence some dumbness here
-	VectorSet( frontAngles, -ent->random, 0.0f, 0.0f );
+	VectorSet( frontAngles, -ent->Q_random, 0.0f, 0.0f );
 	VectorSet( backAngles, 0.0f, 0.0f, ent->speed - ent->s.angles[YAW] );
 
 	gi.G2API_SetBoneAngles( &ent->ghoul2[ent->playerModel], "bone_barrel", frontAngles, 
@@ -1743,7 +1743,7 @@ void pas_think( gentity_t *ent )
 		ent->s.loopSound = 0;
 	}
 
-	if ( ent->enemy && ent->attackDebounceTime < level.time && random() > 0.3f )
+	if ( ent->enemy && ent->attackDebounceTime < level.time && Q_random() > 0.3f )
 	{
 		ent->count--;
 
@@ -1942,8 +1942,8 @@ void ion_cannon_think( gentity_t *self )
 		}
 		else
 		{
-			// done with burst, so wait delay amount, plus a random bit
-			self->nextthink = level.time + ( self->delay + crandom() * self->random );
+			// done with burst, so wait delay amount, plus a Q_random bit
+			self->nextthink = level.time + ( self->delay + Q_crandom() * self->Q_random );
 			self->count = Q_irand(0,5); // 0-5 bursts
 
 			// Not firing this time
@@ -1975,7 +1975,7 @@ void ion_cannon_think( gentity_t *self )
 	}
 
 	gi.G2API_SetBoneAnimIndex( &self->ghoul2[self->playerModel], self->rootBone, 0, 8, BONE_ANIM_OVERRIDE_FREEZE, 0.6f, cg.time, -1, -1 );
-	self->nextthink = level.time + self->wait + crandom() * self->random;
+	self->nextthink = level.time + self->wait + Q_crandom() * self->Q_random;
 }
 
 //----------------------------------------------------------------------------------------------
@@ -2052,7 +2052,7 @@ Huge ion cannon, like the ones at the rebel base on Hoth.
   SHIELDED - cannon is shielded, any kind of shot bounces off.
 
   wait	- How fast it shoots (default 1500 ms between shots, can't be less than 500 ms)
-  random - milliseconds wait variation (default 400 ms...up to plus or minus .4 seconds)
+  Q_random - milliseconds wait variation (default 400 ms...up to plus or minus .4 seconds)
   delay	- Number of milliseconds between bursts (default 6000 ms, can't be less than 1000 ms, only works when BURSTS checked)
 
   health - default 2000
@@ -2094,9 +2094,9 @@ void SP_misc_ion_cannon( gentity_t *base )
 		base->wait = 500.0f;
 	}
 
-	if ( base->random == 0.0f )
+	if ( base->Q_random == 0.0f )
 	{
-		base->random = 400.0f;
+		base->Q_random = 400.0f;
 	}
 
 	if ( base->delay == 0 )
@@ -2129,7 +2129,7 @@ void SP_misc_ion_cannon( gentity_t *base )
 	{
 		// start thinking now, otherwise, we'll wait until we are used
 		base->e_ThinkFunc = thinkF_ion_cannon_think;
-		base->nextthink = level.time + base->wait + crandom() * base->random;
+		base->nextthink = level.time + base->wait + Q_crandom() * base->Q_random;
 	}
 
 	// Bursts?
@@ -2290,7 +2290,7 @@ Creates a turret that, when the player uses a panel, takes control of this turre
 "target3" - thing to use when it dies.
 
   radius - the max yaw range in degrees, (default 90) which means you can move 90 degrees on either side of the start angles.
-  random - the max pitch range in degrees, (default 60) which means you can move 60 degrees above or below the start angles.
+  Q_random - the max pitch range in degrees, (default 60) which means you can move 60 degrees above or below the start angles.
   delay - time between shots, in milliseconds (default 200).
   damage - amount of damage shots do, (default 50).
   speed - missile speed, (default 3000)
@@ -2358,18 +2358,18 @@ void panel_turret_think( gentity_t *self )
 		}
 
 		// Only clamp if we have a PITCH clamp
-		if ( self->random != 0.0f )
+		if ( self->Q_random != 0.0f )
 		// Angle clamping -- PITCH
 		{
-			if ( self->s.apos.trBase[PITCH] > self->random ) // random is PITCH
+			if ( self->s.apos.trBase[PITCH] > self->Q_random ) // Q_random is PITCH
 			{
-				self->pos3[PITCH] += ANGLE2SHORT( AngleNormalize180( self->random - self->s.apos.trBase[PITCH]));
-				self->s.apos.trBase[PITCH] = self->random;
+				self->pos3[PITCH] += ANGLE2SHORT( AngleNormalize180( self->Q_random - self->s.apos.trBase[PITCH]));
+				self->s.apos.trBase[PITCH] = self->Q_random;
 			}
-			else if ( self->s.apos.trBase[PITCH] < -self->random )
+			else if ( self->s.apos.trBase[PITCH] < -self->Q_random )
 			{
-				self->pos3[PITCH] -= ANGLE2SHORT( AngleNormalize180( self->random + self->s.apos.trBase[PITCH]));
-				self->s.apos.trBase[PITCH] = -self->random;
+				self->pos3[PITCH] -= ANGLE2SHORT( AngleNormalize180( self->Q_random + self->s.apos.trBase[PITCH]));
+				self->s.apos.trBase[PITCH] = -self->Q_random;
 			}
 		}
 
@@ -2487,7 +2487,7 @@ void panel_turret_use( gentity_t *self, gentity_t *other, gentity_t *activator )
 void SP_misc_panel_turret( gentity_t *self ) 
 {
 	G_SpawnFloat( "radius", "90", &self->radius );	// yaw
-	G_SpawnFloat( "random", "60", &self->random );	// pitch
+	G_SpawnFloat( "Q_random", "60", &self->Q_random );	// pitch
 	G_SpawnFloat( "speed" , "3000", &self->speed );
 	G_SpawnInt( "delay", "200", &self->delay );
 	G_SpawnInt( "damage", "50", &self->damage );

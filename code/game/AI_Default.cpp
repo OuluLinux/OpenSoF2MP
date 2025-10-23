@@ -76,7 +76,7 @@ void NPC_StandIdle( void )
 	//FIXME: Account for STAND1 or STAND2 here and set the base anim accordingly
 	int	baseSeq = ( anim == BOTH_STAND1 ) ? BOTH_STAND1_RANDOM1 : BOTH_STAND2_RANDOM1;
 
-	//Must have at least one random idle animation
+	//Must have at least one Q_random idle animation
 	//NOTENOTE: This relies on proper ordering of animations, which SHOULD be okay
 	if ( PM_HasAnimation( NPC, baseSeq ) == false )
 		return;
@@ -97,7 +97,7 @@ void NPC_StandIdle( void )
 	
 	int newTime = PM_AnimLength( NPC->client->clientInfo.animFileIndex, (animNumber_t) (baseSeq + newIdle) );
 
-	//Don't do this again for a random amount of time
+	//Don't do this again for a Q_random amount of time
 	TIMER_Set( NPC, "idleAnim", newTime + Q_irand( 2000, 10000 ) );
 */
 }
@@ -116,8 +116,8 @@ qboolean NPC_StandTrackAndShoot (gentity_t *NPC, qboolean canDuck)
 	{
 		if ( NPC->health < 20 )
 		{
-		//	if( NPC->svFlags&SVF_HEALING || random() )
-			if( random() )
+		//	if( NPC->svFlags&SVF_HEALING || Q_random() )
+			if( Q_random() )
 			{
 				duck_ok = qtrue;
 			}
@@ -211,7 +211,7 @@ void NPC_BSStandGuard (void)
 	//FIXME: Use Snapshot info
 	if ( NPC->enemy == NULL )
 	{//Possible to pick one up by being shot
-		if( random() < 0.5 )
+		if( Q_random() < 0.5 )
 		{
 			if(NPC->client->enemyTeam)
 			{

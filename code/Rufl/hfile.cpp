@@ -36,7 +36,7 @@ This file is part of Jedi Academy.
 	#include "..\Ratl\handle_pool_vs.h"
 #endif
 #if !defined(RATL_VECTOR_VS_INC)
-	#include "..\Ratl\vector_vs.h"
+	#include "../Ratl/vector_vs.h"
 #endif
 #if !defined(RUFL_HSTRING_INC)
 	#include "hstring.h"
@@ -69,7 +69,7 @@ struct SOpenFile
 #ifdef _XBOX
 	dllNamespace::hstring mPath;
 #else
-	hstring			mPath;
+	#include "../Ratl/vector_vs.h"
 #endif
 	bool			mForRead;
 	int				mHandle;

@@ -52,7 +52,7 @@ This file is part of Jedi Academy.
 #define CONTENTS_TELEPORTER		0x00080000	// ""
 #define CONTENTS_ITEM			0x00100000	// ""
 #define	CONTENTS_DETAIL			0x08000000	// brushes not used for the bsp
-#define	CONTENTS_TRANSLUCENT	0x80000000	// don't consume surface fragments inside
+#define	CONTENTS_TRANSLUCENT	0x80000000U	// don't consume surface fragments inside
 
 
 // flags pasted from SOF2, be VERY CAREFUL when adding new ones since we share their tools!!!
@@ -70,7 +70,7 @@ This file is part of Jedi Academy.
 #define	SURF_NOMISCENTS			0x01000000	// no client models allowed on this surface
 #define	SURF_FORCESIGHT			0x02000000	// not visible without Force Sight
 
-#define SURF_PATCH				0x80000000	// Mark this face as a patch(editor only)
+#define SURF_PATCH				0x80000000U	// Mark this face as a patch(editor only)
 
 #define MATERIAL_BITS			5
 #define MATERIAL_MASK			0x1f	// mask to get the material type
@@ -184,7 +184,7 @@ Ghoul2 Insert End
 #define	CONTENTS_STRUCTURAL		0x10000000	// brushes used for the bsp
 #define	CONTENTS_TRANSLUCENT	0x20000000	// don't consume surface fragments inside
 #define	CONTENTS_TRIGGER		0x40000000
-#define	CONTENTS_NODROP			0x80000000	// don't leave bodies or items (death fog, lava)
+#define	CONTENTS_NODROP			0x80000000U	// don't leave bodies or items (death fog, lava)
 
 #define	SURF_NODAMAGE			0x1		// never give falling damage
 #define	SURF_SLICK				0x2		// effects game physics

@@ -6,6 +6,7 @@
 #include "bg_public.h"
 #include "bg_vehicles.h"
 #include "g_public.h"
+#include "sof2mp_defs.h"
 
 #ifndef __LCC__
 #define GAME_INLINE ID_INLINE

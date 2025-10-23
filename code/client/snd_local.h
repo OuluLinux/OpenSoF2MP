@@ -27,10 +27,12 @@ This file is part of Jedi Academy.
 #include "../mp3code/mp3struct.h"
 
 // Open AL Specific
-#include "openal\al.h"
-#include "openal\alc.h"
-#include "eax\eax.h"
-#include "eax\eaxman.h"
+#include <AL/al.h>
+#include <AL/alc.h>
+#ifndef __linux__
+#include "eax/eax.h"
+#include "eax/EaxMan.h"
+#endif
 
 // Added for Open AL to know when to mute all sounds (e.g when app. loses focus)
 void S_AL_MuteAllSounds(qboolean bMute);
@@ -95,7 +97,7 @@ typedef struct {
 #define START_SAMPLE_IMMEDIATE	0x7fffffff
 
 // Open AL specific
-typedef struct
+typedef struct streamingBuffer_s
 {
 	ALuint	BufferID;
 	ALuint	Status;
@@ -109,7 +111,7 @@ typedef struct
 #define UNQUEUED	2
 
 
-typedef struct
+typedef struct channel_s
 {
 // back-indented fields new in TA codebase, will re-format when MP3 code finished -ste
 // note: field missing in TA: qboolean	loopSound;		// from an S_AddLoopSound call, cleared each frame

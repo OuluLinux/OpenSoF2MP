@@ -21,6 +21,15 @@ This file is part of Jedi Academy.
 // leave this as first line for PCH reasons...
 //
 #include "../server/exe_headers.h"
+
+// Include UI headers to get windowDef_t definition
+#include "../ui/ui_shared.h"
+
+// Undefine Window to prevent conflicts with X11 or other system headers
+#ifdef Window
+#undef Window
+#endif
+
 #include "../ui/ui_shared.h"
 
 #include "../RMG/RM_Headers.h"
@@ -1172,7 +1181,7 @@ Ghoul2 Insert End
 	  return 0;
 
 	case CG_Z_MALLOC:
-		return (int)Z_Malloc(args[1], (memtag_t) args[2], qfalse);
+		return reinterpret_cast<intptr_t>(Z_Malloc(args[1], (memtag_t) args[2], qfalse));
 
 	case CG_Z_FREE:
 		Z_Free((void *) VMA(1));
@@ -1250,13 +1259,13 @@ Ghoul2 Insert End
 		if (menu)
 		{
 			xPos = (int *) VMA(2);
-			*xPos = (int) menu->window.rect.x;
+			*xPos = (int) menu->wnd.rect.x;
 			yPos = (int *) VMA(3);
-			*yPos = (int) menu->window.rect.y;
+			*yPos = (int) menu->wnd.rect.y;
 			w = (int *) VMA(4);
-			*w = (int) menu->window.rect.w;
+			*w = (int) menu->wnd.rect.w;
 			h = (int *) VMA(5);
-			*h = (int) menu->window.rect.h;
+			*h = (int) menu->wnd.rect.h;
 			result = qtrue;
 		}
 		else
@@ -1273,9 +1282,9 @@ Ghoul2 Insert End
 			if (menu)
 			{
 				xPos = (int *) VMA(2);
-				*xPos = (int) menu->window.rect.x;
+				*xPos = (int) menu->wnd.rect.x;
 				yPos = (int *) VMA(3);
-				*yPos = (int) menu->window.rect.y;
+				*yPos = (int) menu->wnd.rect.y;
 				result = qtrue;
 			}
 			else
@@ -1323,13 +1332,13 @@ Ghoul2 Insert End
 			if (item)
 			{
 				xPos = (int *) VMA(3);
-				*xPos = (int) item->window.rect.x;
+				*xPos = (int) item->wnd.rect.x;
 				yPos = (int *) VMA(4);
-				*yPos = (int) item->window.rect.y;
+				*yPos = (int) item->wnd.rect.y;
 				w = (int *) VMA(5);
-				*w = (int) item->window.rect.w;
+				*w = (int) item->wnd.rect.w;
 				h = (int *) VMA(6);
-				*h = (int) item->window.rect.h;
+				*h = (int) item->wnd.rect.h;
 
 				vec4_t *color;
 
@@ -1339,16 +1348,16 @@ Ghoul2 Insert End
 					return qfalse;
 				}
 
-				(*color)[0] = (float) item->window.foreColor[0];
-				(*color)[1] = (float) item->window.foreColor[1];
-				(*color)[2] = (float) item->window.foreColor[2];
-				(*color)[3] = (float) item->window.foreColor[3];
+				(*color)[0] = (float) item->wnd.foreColor[0];
+				(*color)[1] = (float) item->wnd.foreColor[1];
+				(*color)[2] = (float) item->wnd.foreColor[2];
+				(*color)[3] = (float) item->wnd.foreColor[3];
 				background = (qhandle_t *) VMA(8);
 				if (!background)
 				{
 					return qfalse;
 				}
-				*background = item->window.background;
+				*background = item->wnd.background;
 
 				result = qtrue;
 			}

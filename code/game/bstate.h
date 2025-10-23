@@ -28,7 +28,7 @@ typedef enum //# bState_e
 	BS_FOLLOW_LEADER,//# Follow your leader and shoot any enemies you come across
 	BS_JUMP,//# Face navgoal and jump to it.
 	BS_SEARCH,//# Using current waypoint as a base, search the immediate branches of waypoints for enemies
-	BS_WANDER,//# Wander down random waypoint paths
+	BS_WANDER,//# Wander down Q_random waypoint paths
 	BS_NOCLIP,//# Moves through walls, etc.
 	BS_REMOVE,//# Waits for player to leave PVS then removes itself
 	BS_CINEMATIC,//# Does nothing but face it's angles and move to a goal if it has one

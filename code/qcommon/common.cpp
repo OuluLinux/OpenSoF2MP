@@ -143,7 +143,7 @@ void QDECL Com_Printf( const char *fmt, ... ) {
 	char		msg[MAXPRINTMSG];
 
 	va_start (argptr,fmt);
-	vsprintf_s (msg,fmt,argptr);
+	vsprintf (msg,fmt,argptr);
 	va_end (argptr);
 
 	if ( rd_buffer ) {
@@ -160,9 +160,13 @@ void QDECL Com_Printf( const char *fmt, ... ) {
 	// echo to dedicated console and early console
 	Sys_Print( msg );
 
-#ifdef OUTPUT_TO_BUILD_WINDOW
-	OutputDebugString(msg);
-#endif
+	#ifdef OUTPUT_TO_BUILD_WINDOW
+		#ifdef _WIN32
+			OutputDebugString(msg);
+		#else
+			printf("%s", msg);
+		#endif
+	#endif
 
 	// logfile
 	if ( com_logfile && com_logfile->integer ) {
@@ -197,7 +201,7 @@ void QDECL Com_DPrintf( const char *fmt, ...) {
 	}
 
 	va_start (argptr,fmt);
-	vsprintf_s (msg,fmt,argptr);
+	vsprintf (msg,fmt,argptr);
 	va_end (argptr);
 	
 	Com_Printf ("%s", msg);
@@ -289,7 +293,7 @@ void QDECL Com_Error( int code, const char *fmt, ... ) {
 //	SCR_UnprecacheScreenshot();
 
 	va_start (argptr,fmt);
-	vsprintf_s (com_errorMessage,fmt,argptr);
+	vsprintf (com_errorMessage,fmt,argptr);
 	va_end (argptr);	
 
 	if ( code != ERR_DISCONNECT ) {
@@ -1072,7 +1076,7 @@ void Com_Init( char *commandLine ) {
 #ifndef __NO_JK2
 		if(com_jk2->integer)
 		{
-			JK2SP_Init();
+			//JK2SP_Init();  // Commented out for Linux build
 		}
 		else
 #endif
@@ -1505,7 +1509,7 @@ void Com_Shutdown (void) {
 #ifndef __NO_JK2
 	if(com_jk2->integer)
 	{
-		JK2SP_Shutdown();
+		//JK2SP_Shutdown();  // Commented out for Linux build
 	}
 	else
 #endif

@@ -243,7 +243,7 @@ namespace STEER
 	// Wander & Path
 	//
 	// By far the most common way to alter a character's thrust, path maintaines motion
-	// along a navigational path (see NAV namespace), and a random wander path.
+	// along a navigational path (see NAV namespace), and a Q_random wander path.
 	////////////////////////////////////////////////////////////////////////////////////
 	float			Path(gentity_t* actor);
 	float			Wander(gentity_t* actor);

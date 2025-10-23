@@ -39,8 +39,8 @@ static void WP_FireConcussionAlt( gentity_t *ent )
 	{
 		vec3_t angles;
 		vectoangles(forwardVec, angles);
-		angles[PITCH] += ( crandom() * (CONC_NPC_SPREAD+(6-ent->NPC->currentAim)*0.25f));//was 0.5f
-		angles[YAW]	  += ( crandom() * (CONC_NPC_SPREAD+(6-ent->NPC->currentAim)*0.25f));//was 0.5f
+		angles[PITCH] += ( Q_crandom() * (CONC_NPC_SPREAD+(6-ent->NPC->currentAim)*0.25f));//was 0.5f
+		angles[YAW]	  += ( Q_crandom() * (CONC_NPC_SPREAD+(6-ent->NPC->currentAim)*0.25f));//was 0.5f
 		AngleVectors(angles, forwardVec, vrightVec, up);
 	}
 
@@ -257,8 +257,8 @@ static void WP_FireConcussion( gentity_t *ent )
 	{
 		vec3_t angles;
 		vectoangles(forwardVec, angles);
-		angles[PITCH] += ( crandom() * (CONC_NPC_SPREAD+(6-ent->NPC->currentAim)*0.25f));//was 0.5f
-		angles[YAW]	  += ( crandom() * (CONC_NPC_SPREAD+(6-ent->NPC->currentAim)*0.25f));//was 0.5f
+		angles[PITCH] += ( Q_crandom() * (CONC_NPC_SPREAD+(6-ent->NPC->currentAim)*0.25f));//was 0.5f
+		angles[YAW]	  += ( Q_crandom() * (CONC_NPC_SPREAD+(6-ent->NPC->currentAim)*0.25f));//was 0.5f
 		AngleVectors(angles, forwardVec, vrightVec, up);
 	}
 

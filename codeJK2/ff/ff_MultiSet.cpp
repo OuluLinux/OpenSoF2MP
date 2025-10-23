@@ -21,11 +21,21 @@ qboolean FFMultiSet::Init( FFSystem::Config &config )
 	Com_Printf( "Feedback devices:\n" );
 #endif
 
+#ifdef _WIN32
 	HINSTANCE hInstance = (HINSTANCE)g_wv.hInstance;
 	HWND hWnd = (HWND)g_wv.hWnd;
+#else
+	void* hInstance = NULL;
+	void* hWnd = NULL;
+#endif
 
 	mDevices = new CImmDevices;
+#ifdef _WIN32
 	if ( mDevices && mDevices->CreateDevices( hInstance, hWnd ) )
+#else
+	// On Linux, force feedback devices are not available
+	if (false)  // Always false on Linux
+#endif
 	{
 		for
 		(	int i = 0

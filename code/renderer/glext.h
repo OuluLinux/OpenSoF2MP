@@ -34,7 +34,7 @@ extern "C" {
 ** version 1.2.1 Specification.
 */
 
-#if defined(_WIN32) && !defined(APIENTRY) && !defined(__CYGWIN__)
+#if defined(_WIN32) && !defined(APIENTRY) && !defined(__CYGWIN__) && !defined(__linux__)
 #define WIN32_LEAN_AND_MEAN 1
 #include <windows.h>
 #endif

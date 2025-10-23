@@ -86,7 +86,7 @@ void multi_trigger_run( gentity_t *ent )
 		if ( ent->painDebounceTime != level.time )
 		{//first ent to touch it this frame
 			//ent->e_ThinkFunc = thinkF_multi_wait;
-			ent->nextthink = level.time + ( ent->wait + ent->random * crandom() ) * 1000;
+			ent->nextthink = level.time + ( ent->wait + ent->Q_random * Q_crandom() ) * 1000;
 			ent->painDebounceTime = level.time;
 		}
 	} 
@@ -356,7 +356,7 @@ void trigger_cleared_fire (gentity_t *self)
 	// should start the wait timer now, because the trigger's just been cleared, so we must "wait" from this point
 	if ( self->wait > 0 ) 
 	{
-		self->nextthink = level.time + ( self->wait + self->random * crandom() ) * 1000;
+		self->nextthink = level.time + ( self->wait + self->Q_random * Q_crandom() ) * 1000;
 	}
 }
 
@@ -410,7 +410,7 @@ INACTIVE - Start off, has to be activated to be touchable/usable
 MULTIPLE - multiple entities can touch this trigger in a single frame *and* if needed, the trigger can have a wait of > 0
 
 "wait"		Seconds between triggerings, 0 default, number < 0 means one time only.
-"random"	wait variance, default is 0
+"Q_random"	wait variance, default is 0
 "delay"		how many seconds to wait to fire targets after tripped
 "hiderange" As long as NPC's head is in this trigger, NPCs out of this hiderange cannot see him.  If you set an angle on the trigger, they're only hidden from enemies looking in that direction.  the player's crouch viewheight is 36, his standing viewheight is 54.  So a trigger thast should hide you when crouched but not standing should be 48 tall.
 "target2"	The trigger will fire this only when the trigger has been activated and subsequently 'cleared'( once any of the conditions on the trigger have not been satisfied).  This will not fire the "target" more than once until the "target2" is fired (trigger field is 'cleared')
@@ -419,8 +419,8 @@ MULTIPLE - multiple entities can touch this trigger in a single frame *and* if n
 "max_pilots"	Number of pilots this spawner will allow
 
 Variable sized repeatable trigger.  Must be targeted at one or more entities.
-so, the basic time between firing is a random time between
-(wait - random) and (wait + random)
+so, the basic time between firing is a Q_random time between
+(wait - Q_random) and (wait + Q_random)
 
 "NPC_targetname" - If set, only an NPC with a matching NPC_targetname will trip this trigger
 "team" - If set, only this team can trip this trigger
@@ -442,13 +442,13 @@ void SP_trigger_multiple( gentity_t *ent )
 	}
 	
 	G_SpawnFloat( "wait", "0", &ent->wait );//was 0.5 ... but that means wait can never be zero... we should probably put it back to 0.5, though...
-	G_SpawnFloat( "random", "0", &ent->random );
+	G_SpawnFloat( "Q_random", "0", &ent->Q_random );
 	G_SpawnInt( "max_pilots", "2", &ent->lastInAirTime );
 
 
-	if ( (ent->wait > 0) && (ent->random >= ent->wait) ) {
-		ent->random = ent->wait - FRAMETIME;
-		gi.Printf(S_COLOR_YELLOW"trigger_multiple has random >= wait\n");
+	if ( (ent->wait > 0) && (ent->Q_random >= ent->wait) ) {
+		ent->Q_random = ent->wait - FRAMETIME;
+		gi.Printf(S_COLOR_YELLOW"trigger_multiple has Q_random >= wait\n");
 	}
 
 	ent->delay *= 1000;//1 = 1 msec, 1000 = 1 sec
@@ -483,11 +483,11 @@ NPCONLY - only non-player NPCs can trigger this by touch
 INACTIVE - Start off, has to be activated to be touchable/usable
 MULTIPLE - multiple entities can touch this trigger in a single frame *and* if needed, the trigger can have a wait of > 0
 
-"random"	wait variance, default is 0
+"Q_random"	wait variance, default is 0
 "delay"		how many seconds to wait to fire targets after tripped
 Variable sized repeatable trigger.  Must be targeted at one or more entities.
-so, the basic time between firing is a random time between
-(wait - random) and (wait + random)
+so, the basic time between firing is a Q_random time between
+(wait - Q_random) and (wait + Q_random)
 "noise"		Sound to play when the trigger fires (plays at activator's origin)
 
 "NPC_targetname" - If set, only an NPC with a matching NPC_targetname will trip this trigger
@@ -1434,15 +1434,15 @@ Repeatedly fires its targets.
 Can be turned on or off by using.
 
 "wait"			base time between triggering all targets, default is 1
-"random"		wait variance, default is 0
-so, the basic time between firing is a random time between
-(wait - random) and (wait + random)
+"Q_random"		wait variance, default is 0
+so, the basic time between firing is a Q_random time between
+(wait - Q_random) and (wait + Q_random)
 
 */
 void func_timer_think( gentity_t *self ) {
 	G_UseTargets (self, self->activator);
 	// set time before next firing
-	self->nextthink = level.time + 1000 * ( self->wait + crandom() * self->random );
+	self->nextthink = level.time + 1000 * ( self->wait + Q_crandom() * self->Q_random );
 }
 
 void func_timer_use( gentity_t *self, gentity_t *other, gentity_t *activator ) {
@@ -1462,15 +1462,15 @@ void func_timer_use( gentity_t *self, gentity_t *other, gentity_t *activator ) {
 }
 
 void SP_func_timer( gentity_t *self ) {
-	G_SpawnFloat( "random", "1", &self->random);
+	G_SpawnFloat( "Q_random", "1", &self->Q_random);
 	G_SpawnFloat( "wait", "1", &self->wait );
 
 	self->e_UseFunc   = useF_func_timer_use;
 	self->e_ThinkFunc = thinkF_func_timer_think;
 
-	if ( self->random >= self->wait ) {
-		self->random = self->wait - 1;//NOTE: was - FRAMETIME, but FRAMETIME is in msec (100) and these numbers are in *seconds*!
-		gi.Printf( "func_timer at %s has random >= wait\n", vtos( self->s.origin ) );
+	if ( self->Q_random >= self->wait ) {
+		self->Q_random = self->wait - 1;//NOTE: was - FRAMETIME, but FRAMETIME is in msec (100) and these numbers are in *seconds*!
+		gi.Printf( "func_timer at %s has Q_random >= wait\n", vtos( self->s.origin ) );
 	}
 
 	if ( self->spawnflags & 1 ) {
@@ -1640,7 +1640,7 @@ void trigger_visible_check_player_visibility( gentity_t *self )
 		//2: see if dot to us and player viewangles is > 0.7
 		AngleVectors( player->client->renderInfo.eyeAngles, forward, NULL, NULL );
 		dot = DotProduct( forward, dir );
-		if ( dot > self->random )
+		if ( dot > self->Q_random )
 		{//Within the desired FOV
 			//3: see if player is in PVS
 			if ( gi.inPVS( self->currentOrigin, player->client->renderInfo.eyePoint ) )
@@ -1681,13 +1681,13 @@ void SP_trigger_visible( gentity_t *self )
 		self->radius = 512;
 	}
 
-	if ( self->random <= 0 )
+	if ( self->Q_random <= 0 )
 	{//about 30 degrees
-		self->random = 0.7f;
+		self->Q_random = 0.7f;
 	}
 	else
 	{//convert from FOV degrees to number meaningful for dot products
-		self->random = 1.0f - (self->random/90.0f);
+		self->Q_random = 1.0f - (self->Q_random/90.0f);
 	}
 
 	if ( self->spawnflags & 128 )

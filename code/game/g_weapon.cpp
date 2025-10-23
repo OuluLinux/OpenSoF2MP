@@ -316,7 +316,7 @@ int WP_FindClosestBodyPart(gentity_t *ent, gentity_t *other, vec3_t point, vec3_
 
 		if (where < 2 && c == 0) 
 		{
-			if (random() < .75f)		// 25% chance to actualy hit the head or eye
+			if (Q_random() < .75f)		// 25% chance to actualy hit the head or eye
 				where = 7;
 		}
 
@@ -374,9 +374,9 @@ int WP_FindClosestBodyPart(gentity_t *ent, gentity_t *other, vec3_t point, vec3_
 	if (c == 0)
 	{
 		// Add a bit of chance to the actual location
-		float r = random() * 8.0f - 4.0f;
-		float r2 = random() * 8.0f - 4.0f;
-		float r3 = random() * 10.0f - 5.0f;
+		float r = Q_random() * 8.0f - 4.0f;
+		float r2 = Q_random() * 8.0f - 4.0f;
+		float r3 = Q_random() * 10.0f - 5.0f;
 
 		out[0] += r;
 		out[1] += r2;
@@ -1025,7 +1025,7 @@ void WP_FireVehicleWeapon( gentity_t *ent, vec3_t start, vec3_t dir, vehWeaponIn
 				ent->client->rocketTargetTime = 0;
 
 				VectorCopy( dir, missile->movedir );
-				missile->random = 1.0f;//FIXME: externalize?
+				missile->Q_random = 1.0f;//FIXME: externalize?
 			}
 		}
 	}
@@ -1651,7 +1651,7 @@ TOGGLE - keep firing until used again (fires at intervals of "wait")
 
 "wait" - debounce time between refires (defaults to 500)
 "delay" - speed of WP_THERMAL (default is 900)
-"random" - ranges from 0 to random, added to wait (defaults to 0)
+"Q_random" - ranges from 0 to Q_random, added to wait (defaults to 0)
 
 "target" - what to aim at (will update aim every frame if it's a moving target)  
 
@@ -1684,9 +1684,9 @@ void misc_weapon_shooter_fire( gentity_t *self )
 	if ( (self->spawnflags&2) )
 	{//repeat
 		self->e_ThinkFunc = thinkF_misc_weapon_shooter_fire;
-		if (self->random)
+		if (self->Q_random)
 		{
-			self->nextthink = level.time + self->wait + (int)(random()*self->random);
+			self->nextthink = level.time + self->wait + (int)(Q_random()*self->Q_random);
 		}
 		else
 		{

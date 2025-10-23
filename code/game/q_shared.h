@@ -68,6 +68,7 @@ This file is part of Jedi Academy.
 #include <stdlib.h>
 #include <time.h>
 #include <ctype.h>
+#include <stddef.h>  // for offsetof
 
 #ifdef _XBOX
 #define tvector(T) std::vector< T >
@@ -186,6 +187,31 @@ void Sys_PumpEvents( void );
 #define	CPUSTRING	"linux-other"
 #endif
 
+// Handle string function mappings for Linux
+#ifdef __linux__
+#define stricmp strcasecmp
+#define strnicmp strncasecmp
+#define strcmpi strcasecmp  // Map Windows strcmpi to Linux strcasecmp
+// For strlwr and strupr, we'll implement them inline
+inline char* strlwr(char* s) {
+    char* p = s;
+    while (*p) {
+        *p = tolower(*p);
+        p++;
+    }
+    return s;
+}
+
+inline char* strupr(char* s) {
+    char* p = s;
+    while (*p) {
+        *p = toupper(*p);
+        p++;
+    }
+    return s;
+}
+#endif
+
 #define	PATH_SEP '/'
 
 #endif
@@ -196,6 +222,7 @@ typedef unsigned long		ulong;
 typedef unsigned short		word;
 
 typedef unsigned char 		byte;
+typedef unsigned short		USHORT;
 
 typedef const char *LPCSTR;
 
@@ -1001,13 +1028,13 @@ inline int Q_irand(int min, int max) {
 }
 
 //returns a float between 0 and 1.0
-inline float random() {
+inline float Q_random() {
 	return (rand() / ((float)0x7fff));
 }
 
 //returns a float between -1 and 1.0
-inline float crandom() {
-	return (2.0F * (random() - 0.5F));
+inline float Q_crandom() {
+	return (2.0F * (Q_random() - 0.5F));
 }
 
 float erandom( float mean );
@@ -1234,12 +1261,23 @@ int Q_isalpha( int c );
 //char	*Q_strrchr( const char* string, int c );
 
 // NON-portable (but faster) versions
+#ifdef __linux__
+// Use Linux-specific implementations
+inline int	Q_stricmp (const char *s1, const char *s2) { return strcasecmp(s1, s2); }
+inline int	Q_strncmp (const char *s1, const char *s2, int n) { return strncmp(s1, s2, n); }
+inline int	Q_stricmpn (const char *s1, const char *s2, int n) { return strncasecmp(s1, s2, n); }
+inline char	*Q_strlwr( char *s1 ) { return Q_strlwr(s1); }
+inline char	*Q_strupr( char *s1 ) { return Q_strupr(s1); }
+inline const char	*Q_strrchr( const char* str, int c ) { return strrchr(str, c); }
+#else
+// Windows versions
 inline int	Q_stricmp (const char *s1, const char *s2) { return stricmp(s1, s2); }
 inline int	Q_strncmp (const char *s1, const char *s2, int n) { return strncmp(s1, s2, n); }
 inline int	Q_stricmpn (const char *s1, const char *s2, int n) { return strnicmp(s1, s2, n); }
 inline char	*Q_strlwr( char *s1 ) { return strlwr(s1); }
 inline char	*Q_strupr( char *s1 ) { return strupr(s1); }
 inline const char	*Q_strrchr( const char* str, int c ) { return strrchr(str, c); }
+#endif
 
 
 // buffer size safe library replacements
@@ -2736,4 +2774,14 @@ typedef enum
 
 #include "../game/genericparser2.h"
 
+// String package functions
+qboolean JK2SP_Register(const char *inPackage, unsigned char Registration);
+const char *JK2SP_GetStringText(unsigned short ID);
+const char *JK2SP_GetStringTextString(const char *Reference);
+
+// String package registration flags
+#define SP_REGISTER_CLIENT    (0x01)
+#define SP_REGISTER_SERVER    (0x02)
+#define SP_REGISTER_MENU      (0x04)
+#define SP_REGISTER_REQUIRED  (0x08)
 #endif	// __Q_SHARED_H

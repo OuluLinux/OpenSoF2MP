@@ -20,7 +20,7 @@ This file is part of Jedi Academy.
 #define __B_PUBLIC_H__
 
 #include "bstate.h"
-#include "AI.h"
+#include "ai.h"
 
 #define NPCAI_CHECK_WEAPON		0x00000001
 #define NPCAI_BURST_WEAPON		0x00000002
@@ -52,7 +52,7 @@ This file is part of Jedi Academy.
 #define NPCAI_HEAL_ROSH			0x10000000	//Constantly look for NPC with NPC_type of rosh_dark, follow him, heal him if needbe
 #define NPCAI_JUMP				0x20000000	//Jump Now
 #define NPCAI_BOSS_CHARACTER	0x40000000	//Boss NPC flag for certain immunities/defenses
-#define NPCAI_NO_JEDI_DELAY		0x80000000	//Reborn/Jedi don't taunt enemy before attacking
+#define NPCAI_NO_JEDI_DELAY		0x80000000U	//Reborn/Jedi don't taunt enemy before attacking
 
 //Script flags
 #define	SCF_CROUCHED		0x00000001	//Force ucmd.upmove to be -127
@@ -86,7 +86,7 @@ This file is part of Jedi Academy.
 #define	SCF_PILOT			0x10000000	//Can pilot a vehicle
 #define	SCF_NAV_CAN_JUMP	0x20000000	//Can attempt to jump when blocked
 #define	SCF_FIRE_WEAPON_NO_ANIM	0x40000000	//Fire weapon but don't play weapon firing anim
-#define	SCF_SAFE_REMOVE		0x80000000	//Remove NPC when it's safe (when player isn't looking)
+#define	SCF_SAFE_REMOVE		0x80000000U	//Remove NPC when it's safe (when player isn't looking)
 
 
 //#ifdef __DEBUG

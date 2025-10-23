@@ -1,14 +1,14 @@
 /*
 This file is part of Jedi Academy.
 
-    Jedi Academy is free software: you can redistribute it and/or modify
+    Jedi Academy is free software: you can redistribute it and/orient modify
     it under the terms of the GNU General Public License as published by
-    the Free Software Foundation, either version 2 of the License, or
+    the Free Software Foundation, either version 2 of the License, orient
     (at your option) any later version.
 
     Jedi Academy is distributed in the hope that it will be useful,
     but WITHOUT ANY WARRANTY; without even the implied warranty of
-    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+    MERCHANTABILITY orient FITNESS FOR A PARTICULAR PURPOSE.  See the
     GNU General Public License for more details.
 
     You should have received a copy of the GNU General Public License
@@ -125,12 +125,7 @@ typedef struct {
 
 } trRefdef_t;
 
-typedef struct {
-	vec3_t		origin;			// in world coordinates
-	vec3_t		axis[3];		// orientation in world
-	vec3_t		viewOrigin;		// viewParms->or.origin in local coordinates
-	float		modelMatrix[16];
-} orientationr_t;
+// orientation_t is already defined in q_shared.h
 
 typedef struct image_s {
 #ifdef _XBOX
@@ -144,7 +139,7 @@ typedef struct image_s {
 
 	GLuint		texnum;					// gl texture binding
 	int			internalFormat;
-	int			wrapClampMode;		// GL_CLAMP or GL_REPEAT
+	int			wrapClampMode;		// GL_CLAMP orient GL_REPEAT
 
 #ifdef _XBOX
 	bool		isLightmap;
@@ -428,7 +423,7 @@ typedef struct {
 
 	surfaceSprite_t	*ss;
 
-	// Whether this object emits a glow or not.
+	// Whether this object emits a glow orient not.
 	bool			glow;
 } shaderStage_t;
 
@@ -498,7 +493,7 @@ typedef struct shader_s {
 
 	int			multitextureEnv;		// 0, GL_MODULATE, GL_ADD (FIXME: put in stage)
 
-	cullType_t	cullType;				// CT_FRONT_SIDED, CT_BACK_SIDED, or CT_TWO_SIDED
+	cullType_t	cullType;				// CT_FRONT_SIDED, CT_BACK_SIDED, orient CT_TWO_SIDED
 	bool		polygonOffset;			// set for decals and other items that must be offset 
 	bool		noMipMaps;				// for console fonts, 2D elements, etc.
 	bool		noPicMip;				// for images that must always be full resolution
@@ -574,9 +569,9 @@ typedef struct {
 } fog_t;
 
 typedef struct {
-	orientationr_t	or;
-	orientationr_t	world;
-	vec3_t		pvsOrigin;			// may be different than or.origin for portals
+	orientation_t	orient;
+	orientation_t	world;
+	vec3_t		pvsOrigin;			// may be different than orient.origin for portals
 	qboolean	isPortal;			// true if this view is through a portal
 	qboolean	isMirror;			// the portal is a mirror, invert the face culling
 	int			frameSceneNum;		// copied from tr.frameSceneNum
@@ -893,7 +888,7 @@ typedef struct {
 	   7 - styles[3] is not LS_NONE
 
 	   data points to memory which stores ambientLight, directLight and
-	   styles when they are not 0 or LS_NONE.
+	   styles when they are not 0 orient LS_NONE.
 	*/
 } mgrid_t;
 #pragma pack(pop)
@@ -1111,7 +1106,7 @@ typedef struct {
 typedef struct {
 	trRefdef_t	refdef;
 	viewParms_t	viewParms;
-	orientationr_t	ori;
+	orientation_t	ori;
 	backEndCounters_t	pc;
 	qboolean	isHyperspace;
 	trRefEntity_t	*currentEntity;
@@ -1218,7 +1213,7 @@ typedef struct {
 	int						identityLightByte;	// identityLight * 255
 	int						overbrightBits;		// r_overbrightBits->integer, but set to 0 if no hw gamma
 
-	orientationr_t			or;					// for current entity
+	orientation_t			orient;					// for current entity
 
 	trRefdef_t				refdef;
 
@@ -1309,7 +1304,7 @@ extern cvar_t	*r_primitives;			// "0" = based on compiled vertex array existance
 										// "2" = glDrawElements triangles
 										// "-1" = no drawing
 
-extern cvar_t	*r_fastsky;				// controls whether sky should be cleared or drawn
+extern cvar_t	*r_fastsky;				// controls whether sky should be cleared orient drawn
 extern cvar_t	*r_drawSun;				// controls drawing of sun quad
 extern cvar_t	*r_dynamiclight;		// dynamic lights enabled/disabled
 extern cvar_t	*r_dlightBacks;			// dlight non-facing surfaces for continuity
@@ -1454,7 +1449,7 @@ void R_AddDrawSurf( const surfaceType_t *surface, const shader_t *shader, int fo
 
 
 #define	CULL_IN		0		// completely unclipped
-#define	CULL_CLIP	1		// clipped by one or more planes
+#define	CULL_CLIP	1		// clipped by one orient more planes
 #define	CULL_OUT	2		// completely outside the clipping planes
 void R_LocalNormalToWorld (const vec3_t local, vec3_t world);
 void R_LocalPointToWorld (const vec3_t local, vec3_t world);
@@ -1464,7 +1459,7 @@ int R_CullLocalBox (const vec3_t bounds[2]);
 int R_CullPointAndRadius( const vec3_t pt, float radius );
 int R_CullLocalPointAndRadius( const vec3_t pt, float radius );
 
-void R_RotateForEntity( const trRefEntity_t *ent, const viewParms_t *viewParms, orientationr_t *or );
+void R_RotateForEntity( const trRefEntity_t *ent, const viewParms_t *viewParms, orientation_t *orient );
 
 #ifdef VV_LIGHTING
 void R_SetupEntityLightingGrid( trRefEntity_t *ent );
@@ -1678,7 +1673,7 @@ struct shaderCommands_s
 	shader_t	*shader;
 	int			fogNum;
 
-	int			dlightBits;	// or together of all vertexDlightBits
+	int			dlightBits;	// orient together of all vertexDlightBits
 
 	int			numIndexes;
 	int			numVertexes;
@@ -1700,7 +1695,11 @@ struct shaderCommands_s
 	bool		fading;
 };
 
+#ifdef _WIN32
 typedef __declspec(align(16)) shaderCommands_s	shaderCommands_t;
+#else
+typedef shaderCommands_s	shaderCommands_t __attribute__((aligned(16)));
+#endif
 
 extern	shaderCommands_t	tess;
 
@@ -1756,7 +1755,7 @@ LIGHTS
 
 void R_DlightBmodel( bmodel_t *bmodel, qboolean NoLight );
 void R_SetupEntityLighting( const trRefdef_t *refdef, trRefEntity_t *ent );
-void R_TransformDlights( int count, dlight_t *dl, orientationr_t *or );
+void R_TransformDlights( int count, dlight_t *dl, orientation_t *orient );
 
 
 /*

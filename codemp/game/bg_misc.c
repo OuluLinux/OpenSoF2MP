@@ -3200,3 +3200,110 @@ qboolean BG_OutOfMemory ( void )
 {
 	return bg_poolSize >= MAX_POOL_SIZE;
 }
+
+// Additional memory allocation functions needed by AI code
+#define BG_MAX_TEMP_MEMORY 1024*1024  // 1MB
+static char bg_temp_memory[BG_MAX_TEMP_MEMORY];
+static int bg_temp_memory_pos = 0;
+
+void *BG_TempAlloc(int size)
+{
+	void *retval = &bg_temp_memory[bg_temp_memory_pos];
+	bg_temp_memory_pos += (size + 3) & ~3; // align to 4 byte boundary
+	return retval;
+}
+
+void BG_TempFree(int size)
+{
+	size = (size + 3) & ~3;
+	bg_temp_memory_pos -= size;
+	if (bg_temp_memory_pos < 0)
+	{
+		bg_temp_memory_pos = 0;
+	}
+}
+
+// Add declaration for forcePowerNeeded
+int forcePowerNeeded[NUM_FORCE_POWER_LEVELS][NUM_FORCE_POWERS] =
+{
+	{ // FORCE_LEVEL_0 - required for using any force power
+		0, //FP_HEAL
+		0, //FP_LEVITATION
+		0, //FP_SPEED
+		0, //FP_PUSH
+		0, //FP_PULL
+		0, //FP_TELEPATHY
+		0, //FP_GRIP
+		0, //FP_LIGHTNING
+		0, //FP_RAGE
+		0, //FP_PROTECT
+		0, //FP_ABSORB
+		0, //FP_TEAM_HEAL
+		0, //FP_TEAM_FORCE
+		0, //FP_DRAIN
+		0, //FP_SEE
+		0, //FP_SABER_OFFENSE
+		0, //FP_SABER_DEFENSE
+		0, //FP_SABERTHROW
+	},
+	{ // FORCE_LEVEL_1
+		10, //FP_HEAL
+		1, //FP_LEVITATION
+		1, //FP_SPEED
+		1, //FP_PUSH
+		1, //FP_PULL
+		1, //FP_TELEPATHY
+		10, //FP_GRIP
+		1, //FP_LIGHTNING
+		10, //FP_RAGE
+		10, //FP_PROTECT
+		10, //FP_ABSORB
+		10, //FP_TEAM_HEAL
+		10, //FP_TEAM_FORCE
+		10, //FP_DRAIN
+		20, //FP_SEE
+		1, //FP_SABER_OFFENSE
+		1, //FP_SABER_DEFENSE
+		1, //FP_SABERTHROW
+	},
+	{ // FORCE_LEVEL_2
+		20, //FP_HEAL
+		1, //FP_LEVITATION
+		1, //FP_SPEED
+		1, //FP_PUSH
+		1, //FP_PULL
+		1, //FP_TELEPATHY
+		20, //FP_GRIP
+		5, //FP_LIGHTNING
+		20, //FP_RAGE
+		20, //FP_PROTECT
+		20, //FP_ABSORB
+		20, //FP_TEAM_HEAL
+		20, //FP_TEAM_FORCE
+		20, //FP_DRAIN
+		20, //FP_SEE
+		3, //FP_SABER_OFFENSE
+		3, //FP_SABER_DEFENSE
+		5, //FP_SABERTHROW
+	},
+	{ // FORCE_LEVEL_3
+		50, //FP_HEAL
+		1, //FP_LEVITATION
+		1, //FP_SPEED
+		1, //FP_PUSH
+		1, //FP_PULL
+		1, //FP_TELEPATHY
+		50, //FP_GRIP
+		25, //FP_LIGHTNING
+		50, //FP_RAGE
+		50, //FP_PROTECT
+		50, //FP_ABSORB
+		50, //FP_TEAM_HEAL
+		50, //FP_TEAM_FORCE
+		50, //FP_DRAIN
+		20, //FP_SEE
+		6, //FP_SABER_OFFENSE
+		6, //FP_SABER_DEFENSE
+		10, //FP_SABERTHROW
+	},
+};

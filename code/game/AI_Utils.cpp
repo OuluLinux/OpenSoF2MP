@@ -659,7 +659,7 @@ void AI_GroupMemberKilled( gentity_t *self )
 					ST_StartFlee( member, group->enemy, member->currentOrigin, AEL_DANGER_GREAT, 3000, 5000 );
 				}
 				else
-				{//else, maybe just a random chance
+				{//else, maybe just a Q_random chance
 					if ( Q_irand( 0, self->NPC->rank ) > member->NPC->rank )
 					{//lower rank they are, higher rank I am, more likely they are to flee
 						ST_StartFlee( member, group->enemy, member->currentOrigin, AEL_DANGER_GREAT, 3000, 5000 );

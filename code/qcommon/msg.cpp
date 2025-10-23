@@ -19,6 +19,7 @@ This file is part of Jedi Academy.
 #include "../game/q_shared.h"
 #include "qcommon.h"
 #include "../server/server.h"
+#include <stdint.h>
 
 
 
@@ -939,7 +940,7 @@ plyer_state_t communication
 */
 
 // using the stringizing operator to save typing...
-#define	PSF(x) #x,(int)&((playerState_t*)0)->x
+#define	PSF(x) #x,(intptr_t)&((playerState_t*)0)->x
 
 static const netField_t	playerStateFields[] = 
 {

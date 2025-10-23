@@ -66,7 +66,7 @@ void SP_target_give( gentity_t *ent ) {
 
 /*QUAKED target_delay (1 0 0) (-8 -8 -8) (8 8 8)
 "wait" seconds to pause before firing targets.
-"random" delay variance, total delay = delay +/- random seconds
+"Q_random" delay variance, total delay = delay +/- Q_random seconds
 */
 void Think_Target_Delay( gentity_t *ent ) 
 {
@@ -77,7 +77,7 @@ void Use_Target_Delay( gentity_t *ent, gentity_t *other, gentity_t *activator )
 {
 	G_ActivateBehavior(ent,BSET_USE);
 
-	ent->nextthink = level.time + ( ent->wait + ent->random * crandom() ) * 1000;
+	ent->nextthink = level.time + ( ent->wait + ent->Q_random * Q_crandom() ) * 1000;
 	ent->e_ThinkFunc = thinkF_Think_Target_Delay;
 	ent->activator = activator;
 }
@@ -157,7 +157,7 @@ Normal sounds play each time the target is used.
 Looped sounds will be toggled by use functions.
 Multiple identical looping sounds will just increase volume without any speed cost.
 "wait" : Seconds between triggerings, 0 = don't auto trigger
-"random"	wait variance, default is 0
+"Q_random"	wait variance, default is 0
 */
 void Use_Target_Speaker (gentity_t *ent, gentity_t *other, gentity_t *activator) {
 	if(ent->painDebounceTime > level.time)
@@ -214,7 +214,7 @@ void SP_target_speaker( gentity_t *ent ) {
 	}
 
 	G_SpawnFloat( "wait", "0", &ent->wait );
-	G_SpawnFloat( "random", "0", &ent->random );
+	G_SpawnFloat( "Q_random", "0", &ent->Q_random );
 
 	if(!ent->sounds)
 	{
@@ -238,7 +238,7 @@ void SP_target_speaker( gentity_t *ent ) {
 	ent->s.eType = ET_SPEAKER;
 	ent->s.eventParm = ent->noise_index;
 	ent->s.frame = ent->wait * 10;
-	ent->s.clientNum = ent->random * 10;
+	ent->s.clientNum = ent->Q_random * 10;
 
 	ent->wait *= 1000;
 

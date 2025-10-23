@@ -127,8 +127,8 @@ void WP_FireBlaster( gentity_t *ent, qboolean alt_fire )
 		if ( alt_fire )
 		{
 			// add some slop to the alt-fire direction
-			angs[PITCH] += crandom() * BLASTER_ALT_SPREAD;
-			angs[YAW]	+= crandom() * BLASTER_ALT_SPREAD;
+			angs[PITCH] += Q_crandom() * BLASTER_ALT_SPREAD;
+			angs[YAW]	+= Q_crandom() * BLASTER_ALT_SPREAD;
 		}
 		else
 		{
@@ -138,14 +138,14 @@ void WP_FireBlaster( gentity_t *ent, qboolean alt_fire )
 				( ent->client->NPC_class == CLASS_STORMTROOPER ||
 				ent->client->NPC_class == CLASS_SWAMPTROOPER ) )
 			{
-				angs[PITCH] += ( crandom() * (BLASTER_NPC_SPREAD+(6-ent->NPC->currentAim)*0.25f));//was 0.5f
-				angs[YAW]	+= ( crandom() * (BLASTER_NPC_SPREAD+(6-ent->NPC->currentAim)*0.25f));//was 0.5f
+				angs[PITCH] += ( Q_crandom() * (BLASTER_NPC_SPREAD+(6-ent->NPC->currentAim)*0.25f));//was 0.5f
+				angs[YAW]	+= ( Q_crandom() * (BLASTER_NPC_SPREAD+(6-ent->NPC->currentAim)*0.25f));//was 0.5f
 			}
 			else
 			{
 				// add some slop to the main-fire direction
-				angs[PITCH] += crandom() * BLASTER_MAIN_SPREAD;
-				angs[YAW]	+= crandom() * BLASTER_MAIN_SPREAD;
+				angs[PITCH] += Q_crandom() * BLASTER_MAIN_SPREAD;
+				angs[YAW]	+= Q_crandom() * BLASTER_MAIN_SPREAD;
 			}
 		}
 	}

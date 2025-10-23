@@ -16,6 +16,14 @@ This file is part of Jedi Academy.
 */
 // Copyright 2001-2013 Raven Software
 
+// Define Windows-specific types for Linux compatibility
+#ifdef __linux__
+typedef struct tagPOINT {
+    long x;
+    long y;
+} POINT;
+#endif
+
 ///////////////////////////////////////////////////////////////////////////////
 // CDraw32 Class Interface
 //

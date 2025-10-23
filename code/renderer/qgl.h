@@ -5,6 +5,18 @@
 #ifndef __QGL_H__
 #define __QGL_H__
 
+// Define Windows types for Linux
+#ifndef _WIN32
+typedef int BOOL;
+typedef void* HDC;
+typedef void* HGLRC;
+typedef unsigned int UINT;
+typedef float FLOAT;
+typedef void* HANDLE;
+#define WINAPI
+#define DECLARE_HANDLE(name) typedef struct name##__ { int unused; } *name
+#endif
+
 #if defined( __LINT__ )
 
 #include <GL/gl.h>
@@ -27,8 +39,12 @@
 #elif defined( __linux__ )
 
 #include <GL/gl.h>
+#ifndef __linux__
 #include <GL/glx.h>
+#endif
+#ifdef USE_FX_MESA
 #include <GL/fxmesa.h>
+#endif
 
 #else
 
@@ -711,6 +727,7 @@ extern BOOL ( WINAPI * qwglSwapIntervalEXT)( int interval );
 
 #if defined( __linux__ )
 
+#ifdef USE_FX_MESA
 //FX Mesa Functions
 extern fxMesaContext (*qfxMesaCreateContext)(GLuint win, GrScreenResolution_t, GrScreenRefresh_t, const GLint attribList[]);
 extern fxMesaContext (*qfxMesaCreateBestContext)(GLuint win, GLint width, GLint height, const GLint attribList[]);
@@ -718,14 +735,17 @@ extern void (*qfxMesaDestroyContext)(fxMesaContext ctx);
 extern void (*qfxMesaMakeCurrent)(fxMesaContext ctx);
 extern fxMesaContext (*qfxMesaGetCurrentContext)(void);
 extern void (*qfxMesaSwapBuffers)(void);
+#endif
 
 //GLX Functions
+#ifndef __linux__
 extern XVisualInfo * (*qglXChooseVisual)( Display *dpy, int screen, int *attribList );
 extern GLXContext (*qglXCreateContext)( Display *dpy, XVisualInfo *vis, GLXContext shareList, Bool direct );
 extern void (*qglXDestroyContext)( Display *dpy, GLXContext ctx );
 extern Bool (*qglXMakeCurrent)( Display *dpy, GLXDrawable drawable, GLXContext ctx);
 extern void (*qglXCopyContext)( Display *dpy, GLXContext src, GLXContext dst, GLuint mask );
 extern void (*qglXSwapBuffers)( Display *dpy, GLXDrawable drawable );
+#endif // !__linux__
 
 #endif // __linux__
 
