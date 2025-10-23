@@ -21,6 +21,9 @@ This file is part of Jedi Academy.
 #ifndef SND_LOCAL_H
 #define SND_LOCAL_H
 
+// EAX variables will be declared normally regardless of platform
+// The implementation will be stubbed for Linux
+
 #include "../game/q_shared.h"
 #include "../qcommon/qcommon.h"
 #include "snd_public.h"
@@ -34,9 +37,306 @@ This file is part of Jedi Academy.
 #include "eax/EaxMan.h"
 #endif
 
+// Define missing Windows types for Linux
+#ifdef __linux__
+// Define GUID structure for Linux if not already defined
+#ifndef GUID_DEFINED
+#define GUID_DEFINED
+typedef struct _GUID
+{
+    unsigned long  Data1;
+    unsigned short Data2;
+    unsigned short Data3;
+    unsigned char  Data4[8];
+} GUID;
+#endif // GUID_DEFINED
+
+// Basic Windows types for Linux compatibility
+#ifndef HINSTANCE
+#define HINSTANCE void*
+#endif
+
+#ifndef HRESULT
+typedef long HRESULT;
+#define SUCCEEDED(hr) (((HRESULT)(hr)) >= 0)
+#define FAILED(hr) (((HRESULT)(hr)) < 0)
+#define EAX_OK                          0x00000000
+#define EAXERR_INVALID_OPERATION        0x80004001
+#define EAXERR_INVALID_VALUE            0x80004002
+#define EAXERR_NO_MORE_ITEMS            0x80004003
+#endif
+
+// Define missing Windows functions for Linux
+#define timeGetTime() (int)(Sys_Milliseconds())
+#define OutputDebugString(s) Com_Printf("%s", s)
+#define LoadLibrary(name) NULL
+#define FreeLibrary(handle) do {} while(0)
+#define GetProcAddress(handle, name) NULL
+
+// EAX constants
+#define EAX_MAX_FXSLOTS 4
+
+// Declare EAX GUID constants as extern variables instead of macros
+extern const GUID EAXPROPERTYID_EAX40_FXSlot0;
+extern const GUID EAXPROPERTYID_EAX40_FXSlot1;
+extern const GUID EAXPROPERTYID_EAX40_FXSlot2;
+extern const GUID EAXPROPERTYID_EAX40_FXSlot3;
+extern const GUID EAXPROPERTYID_EAX40_Context;
+extern const GUID EAXPROPERTYID_EAX40_Source;
+extern const GUID EAX_NULL_GUID;
+extern const GUID EAX_PrimaryFXSlotID;
+extern const GUID EAX_REVERB_EFFECT;
+
+// EAX function pointer types
+typedef ALenum (*EAXSet)(const GUID*, ALuint, ALuint, ALvoid*, ALuint);
+typedef ALenum (*EAXGet)(const GUID*, ALuint, ALuint, ALvoid*, ALuint);
+
+// EAX Manager types (stubbed for Linux)
+typedef struct EAXMANAGER *LPEAXMANAGER;
+typedef long (*LPEAXMANAGERCREATE)(LPEAXMANAGER*);
+
+// EAX Manager interface stub
+#define EM_OK EAX_OK
+#define EMFLAG_LOADFROMMEMORY 0x00000001
+#define EMFLAG_LOCKPOSITION   0x00000002
+
+// EAX Vector structure
+typedef struct EAXVECTOR {
+    float x;
+    float y;
+    float z;
+} EAXVECTOR;
+
+// EAX property structures
+typedef struct EAXREVERBPROPERTIES {
+    long lEnvironment;
+    float flEnvironmentSize;
+    float flEnvironmentDiffusion;
+    long lRoom;
+    long lRoomHF;
+    long lRoomLF;
+    float flDecayTime;
+    float flDecayHFRatio;
+    float flDecayLFRatio;
+    long lReflections;
+    float flReflectionsDelay;
+    float flReflectionsPan[3];
+    long lReverb;
+    float flReverbDelay;
+    float flReverbPan[3];
+    float flEchoTime;
+    float flEchoDepth;
+    float flModulationTime;
+    float flModulationDepth;
+    float flAirAbsorptionHF;
+    float flHFReference;
+    float flLFReference;
+    float flRoomRolloffFactor;
+    long lFlags;
+} EAXREVERBPROPERTIES;
+
+typedef struct EAXOBSTRUCTIONPROPERTIES {
+    long lObstruction;
+    float flObstructionLFRatio;
+} EAXOBSTRUCTIONPROPERTIES;
+
+typedef struct EAXOCCLUSIONPROPERTIES {
+    long lOcclusion;
+    float flOcclusionLFRatio;
+    float flOcclusionRoomRatio;
+    float flOcclusionDirectRatio;
+} EAXOCCLUSIONPROPERTIES;
+
+typedef struct EAXACTIVEFXSLOTS {
+    GUID guidActiveFXSlots[2];
+} EAXACTIVEFXSLOTS;
+
+typedef struct EAXFXSLOTPROPERTIES {
+    GUID guidLoadEffect;
+    long lVolume;
+    long lLock;
+    unsigned long ulFlags;
+} EAXFXSLOTPROPERTIES;
+
+// EAX constants
+#define EAXCONTEXT_PRIMARYFXSLOTID      0x00000001
+#define EAXSOURCE_EXCLUSION             0x00000001
+#define EAXSOURCE_ACTIVEFXSLOTID        0x00000002
+#define EAXSOURCE_OBSTRUCTIONPARAMETERS 0x00000003
+#define EAXSOURCE_OCCLUSIONPARAMETERS   0x00000004
+#define EAXSOURCE_FLAGS                 0x00000005
+#define EAXSOURCE_OCCLUSIONLFRATIO      0x00000006
+#define EAXSOURCE_OCCLUSION_ROOMRATIO   0x00000007
+#define EAXSOURCE_OCCLUSION_DIRECTRATIO 0x00000008
+#define EAXSOURCE_OUTPUTGAIN            0x00000009
+#define EAXSOURCE_ROOMFILTERFACTOR      0x0000000A
+#define EAXSOURCE_AIRABSORPTIONFACTOR   0x0000000B
+#define EAXSOURCE_OBSTRUCTIONLFRATIO    0x0000000C
+#define EAXSOURCE_OCCLUSIONLFHFILTER    0x0000000D
+#define EAXSOURCE_OCCLUSIONHFREFERENCE  0x0000000E
+#define EAXSOURCE_OCCLUSIONLFREFERENCE  0x0000000F
+#define EAXSOURCE_EXCLUSIONLFRATIO      0x00000010
+#define EAXSOURCE_INCLUSIONLFRATIO      0x00000011
+#define EAXSOURCE_INCLUSIONLFHFILTER    0x00000012
+#define EAXSOURCE_INCLUSIONDIRECTRATIO  0x00000013
+#define EAXSOURCE_INCLUSIONFLAGS        0x00000014
+#define EAXSOURCE_DIRECTHFAUTO          0x00000015
+#define EAXSOURCE_ROOMAUTO              0x00000016
+#define EAXSOURCE_OCCLUSIONAUTO         0x00000017
+#define EAXSOURCE_DIRECTAUTO            0x00000018
+
+#define EAXREVERB_ALLPARAMETERS         0x00000001
+#define EAXREVERB_ENVIRONMENT           0x00000002
+#define EAXREVERB_ENVIRONMENTSIZE       0x00000003
+#define EAXREVERB_ENVIRONMENTDIFFUSION  0x00000004
+#define EAXREVERB_ROOM                  0x00000005
+#define EAXREVERB_ROOMHF                0x00000006
+#define EAXREVERB_ROOMLF                0x00000007
+#define EAXREVERB_DECAYTIME             0x00000008
+#define EAXREVERB_DECAYHFRATIO          0x00000009
+#define EAXREVERB_DECAYLFRATIO          0x0000000A
+#define EAXREVERB_REFLECTIONS           0x0000000B
+#define EAXREVERB_REFLECTIONSDELAY      0x0000000C
+#define EAXREVERB_REFLECTIONSPAN        0x0000000D
+#define EAXREVERB_REVERB                0x0000000E
+#define EAXREVERB_REVERBDELAY           0x0000000F
+#define EAXREVERB_REVERBPAN             0x00000010
+#define EAXREVERB_ECHOTIME              0x00000011
+#define EAXREVERB_ECHODEPTH             0x00000012
+#define EAXREVERB_MODULATIONTIME        0x00000013
+#define EAXREVERB_MODULATIONDEPTH       0x00000014
+#define EAXREVERB_AIRABSORPTIONHF       0x00000015
+#define EAXREVERB_HFREFERENCE           0x00000016
+#define EAXREVERB_LFREFERENCE           0x00000017
+#define EAXREVERB_ROOMROLLOFFFACTOR     0x00000018
+#define EAXREVERB_FLAGS                 0x00000019
+
+#define EAXFXSLOT_ALLPARAMETERS         0x00000001
+#define EAXFXSLOT_LOADEFFECT            0x00000002
+#define EAXFXSLOT_VOLUME                0x00000003
+#define EAXFXSLOT_LOCK                  0x00000004
+#define EAXFXSLOT_FLAGS                 0x00000005
+
+#define EAXFXSLOTFLAGS_ENVIRONMENT      0x00000001
+#define EAXFXSLOT_LOCKED                0x00000001
+
+#define EAX_ENVIRONMENT_GENERIC         0
+#define EAX_ENVIRONMENT_PADDEDCELL      1
+#define EAX_ENVIRONMENT_ROOM            2
+#define EAX_ENVIRONMENT_BATHROOM        3
+#define EAX_ENVIRONMENT_LIVINGROOM      4
+#define EAX_ENVIRONMENT_STONEROOM       5
+#define EAX_ENVIRONMENT_AUDITORIUM      6
+#define EAX_ENVIRONMENT_CONCERTHALL     7
+#define EAX_ENVIRONMENT_CAVE            8
+#define EAX_ENVIRONMENT_ARENA           9
+#define EAX_ENVIRONMENT_HANGAR          10
+#define EAX_ENVIRONMENT_CARPETEDHALLWAY 11
+#define EAX_ENVIRONMENT_HALLWAY         12
+#define EAX_ENVIRONMENT_STONECORRIDOR   13
+#define EAX_ENVIRONMENT_ALLEY           14
+#define EAX_ENVIRONMENT_FOREST          15
+#define EAX_ENVIRONMENT_CITY            16
+#define EAX_ENVIRONMENT_MOUNTAINS       17
+#define EAX_ENVIRONMENT_QUARRY          18
+#define EAX_ENVIRONMENT_PLAIN           19
+#define EAX_ENVIRONMENT_PARKINGLOT      20
+#define EAX_ENVIRONMENT_SEWERPIPE       21
+#define EAX_ENVIRONMENT_UNDERWATER      22
+
+#define EAXSOURCE_DEFAULTOCCLUSION        0
+#define EAXSOURCE_DEFAULTOCCLUSIONLFRATIO 0.25f
+#define EAXSOURCE_DEFAULTOCCLUSIONROOMRATIO 0.5f
+#define EAXSOURCE_DEFAULTOCCLUSIONDIRECTRATIO 1.0f
+#define EAXSOURCE_DEFAULTOBSTRUCTION      0
+#define EAXSOURCE_DEFAULTOBSTRUCTIONLFRATIO 0.0f
+
+// EAX Point structure
+typedef struct EMPOINT {
+    float fX;
+    float fY;
+    float fZ;
+} EMPOINT;
+
+#endif // __linux__
+
+#ifndef __linux__
+#include "eax/eax.h"
+#include "eax/EaxMan.h"
+#endif
+
+// Define missing Windows types for Linux
+#ifdef __linux__
+// Include OpenAL first to get AL types
+#include <AL/al.h>
+#include <AL/alc.h>
+
+// Basic Windows types for Linux compatibility
+#ifndef HINSTANCE
+#define HINSTANCE void*
+#endif
+
+#ifndef HRESULT
+typedef long HRESULT;
+#define SUCCEEDED(hr) (((HRESULT)(hr)) >= 0)
+#define FAILED(hr) (((HRESULT)(hr)) < 0)
+#define EAX_OK                          0x00000000
+#define EAXERR_INVALID_OPERATION        0x80004001
+#define EAXERR_INVALID_VALUE            0x80004002
+#define EAXERR_NO_MORE_ITEMS            0x80004003
+#endif
+
+// GUID will be defined in snd_dma.cpp, just declare the extern constants
+extern const GUID EAXPROPERTYID_EAX40_FXSlot0;
+extern const GUID EAXPROPERTYID_EAX40_FXSlot1;
+extern const GUID EAXPROPERTYID_EAX40_FXSlot2;
+extern const GUID EAXPROPERTYID_EAX40_FXSlot3;
+extern const GUID EAXPROPERTYID_EAX40_Context;
+extern const GUID EAXPROPERTYID_EAX40_Source;
+extern const GUID EAX_NULL_GUID;
+extern const GUID EAX_PrimaryFXSlotID;
+extern const GUID EAX_REVERB_EFFECT;
+
+#endif // __linux__
+
+// EAX function pointer types
+typedef ALenum (*EAXSet)(const GUID*, ALuint, ALuint, ALvoid*, ALuint);
+typedef ALenum (*EAXGet)(const GUID*, ALuint, ALuint, ALvoid*, ALuint);
+
+// EAX Manager types (stubbed for Linux)
+typedef struct EAXMANAGER *LPEAXMANAGER;
+typedef long (*LPEAXMANAGERCREATE)(LPEAXMANAGER*);
+
+// Define missing Windows functions for Linux
+#define timeGetTime() (int)(Sys_Milliseconds())
+#define OutputDebugString(s) Com_Printf("%s", s)
+#define LoadLibrary(name) NULL
+#define FreeLibrary(handle) do {} while(0)
+#define GetProcAddress(handle, name) NULL
+
+// EAX Manager interface stub
+#define EM_OK EAX_OK
+#define EMFLAG_LOADFROMMEMORY 0x00000001
+#define EMFLAG_LOCKPOSITION   0x00000002
+
+// EAX Vector structure
+
+// EAX GUID constants (will be defined in snd_dma.cpp)
+extern const GUID EAXPROPERTYID_EAX40_FXSlot0;
+extern const GUID EAXPROPERTYID_EAX40_FXSlot1;
+extern const GUID EAXPROPERTYID_EAX40_FXSlot2;
+extern const GUID EAXPROPERTYID_EAX40_FXSlot3;
+extern const GUID EAXPROPERTYID_EAX40_Context;
+extern const GUID EAXPROPERTYID_EAX40_Source;
+extern const GUID EAX_NULL_GUID;
+extern const GUID EAX_PrimaryFXSlotID;
+extern const GUID EAX_REVERB_EFFECT;
+
 // Added for Open AL to know when to mute all sounds (e.g when app. loses focus)
 void S_AL_MuteAllSounds(qboolean bMute);
 
+// Forward declaration for Linux compatibility
+int Sys_Milliseconds(void);
 
 //from SND_AMBIENT
 extern void AS_Init( void );
@@ -242,7 +542,7 @@ void S_memoryLoad(sfx_t *sfx);
 //
 //////////////////////////////////
 
-#include "cl_mp3.h"
 
-#endif	// #ifndef SND_LOCAL_H
 
+
+#endif // SND_LOCAL_H

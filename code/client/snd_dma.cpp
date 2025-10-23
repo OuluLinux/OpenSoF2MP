@@ -241,6 +241,8 @@ void S_SetLipSyncs();
 
 // EAX Related
 
+// Define missing Windows types for Linux compatibility
+
 typedef struct
 {
 	ALuint		ulNumApertures;
@@ -266,6 +268,8 @@ typedef struct
 	GUID	FXSlotGuid;
 	ALint	lEnvID;
 } FXSLOTINFO, *LPFXSLOTINFO;
+#ifndef __linux__
+// Windows-specific variables
 
 ALboolean				s_bEAX;					// Is EAX 4.0 support available
 bool					s_bEALFileLoaded;		// Has an .eal file been loaded for the current level
@@ -283,6 +287,23 @@ long					s_NumFXSlots;			// Number of EAX 4.0 FX Slots
 FXSLOTINFO				s_FXSlotInfo[EAX_MAX_FXSLOTS];	// Stores information about the EAX 4.0 FX Slots
 
 static void InitEAXManager();
+#else
+// Stub variables for Linux
+ALboolean				s_bEAX = AL_FALSE;		// Is EAX 4.0 support available
+bool					s_bEALFileLoaded = false;	// Has an .eal file been loaded for the current level
+bool					s_bInWater = false;		// Underwater effect currently active 
+int						s_EnvironmentID = 0;	// EAGLE ID of current environment
+LPEAXMANAGER			s_lpEAXManager = NULL;	// Pointer to EAXManager object
+HINSTANCE				s_hEAXManInst = NULL;	// Handle of EAXManager DLL
+EAXSet					s_eaxSet = NULL;		// EAXSet() function
+EAXGet					s_eaxGet = NULL;		// EAXGet() function
+EAXREVERBPROPERTIES		s_eaxLPCur;				// Current EAX Parameters
+LPENVTABLE				s_lpEnvTable=NULL;		// Stores information about each environment zone
+long					s_lLastEnvUpdate = 0;	// Time of last EAX update
+long					s_lNumEnvironments = 0;	// Number of environment zones
+long					s_NumFXSlots = 0;		// Number of EAX 4.0 FX Slots
+FXSLOTINFO				s_FXSlotInfo[EAX_MAX_FXSLOTS];	// Stores information about the EAX 4.0 FX Slots
+#endif
 static void ReleaseEAXManager();
 static bool LoadEALFile(char *szEALFilename);
 static void UnloadEALFile();
@@ -304,6 +325,35 @@ void Normalize(EAXVECTOR *v)
 
 // EAX 4.0 GUIDS ... confidential information ...
 
+#ifdef __linux__
+// On Linux, disable EAX functionality by providing stub implementations
+
+// Stub function for EAX calls on Linux
+static ALenum stub_eaxSet(const GUID* guid1, ALuint param1, ALuint param2, ALvoid* data, ALuint size) {
+    return AL_NO_ERROR;
+}
+
+static ALenum stub_eaxGet(const GUID* guid1, ALuint param1, ALuint param2, ALvoid* data, ALuint size) {
+    return AL_NO_ERROR;
+}
+
+// Redirect EAX calls to stubs on Linux
+#define s_eaxSet stub_eaxSet
+#define s_eaxGet stub_eaxGet
+
+// Define GUID constants as stubs for Linux
+const GUID EAXPROPERTYID_EAX40_FXSlot0 = { 0xc4d79f1e, 0xf1ac, 0x436b, { 0xa8, 0x1d, 0xa7, 0x38, 0xe7, 0x4, 0x54, 0x69} };
+const GUID EAXPROPERTYID_EAX40_FXSlot1 = { 0x8c00e96, 0x74be, 0x4491, { 0x93, 0xaa, 0xe8, 0xad, 0x35, 0xa4, 0x91, 0x17} };
+const GUID EAXPROPERTYID_EAX40_FXSlot2 = { 0x1d433b88, 0xf0f6, 0x4637, { 0x91, 0x9f, 0x60, 0xe7, 0xe0, 0x6b, 0x5e, 0xdd} };
+const GUID EAXPROPERTYID_EAX40_FXSlot3 = { 0xefff08ea, 0xc7d8, 0x44ab, { 0x93, 0xad, 0x6d, 0xbd, 0x5f, 0x91, 0x0, 0x64} };
+const GUID EAXPROPERTYID_EAX40_Context = { 0x1d4870ad, 0xdef, 0x43c0, { 0xa4, 0xc, 0x52, 0x36, 0x32, 0x29, 0x63, 0x42} };
+const GUID EAXPROPERTYID_EAX40_Source = { 0x1b86b823, 0x22df, 0x4eae, { 0x8b, 0x3c, 0x12, 0x78, 0xce, 0x54, 0x42, 0x27} };
+const GUID EAX_NULL_GUID = { 0x00000000, 0x0000, 0x0000, { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 } };
+const GUID EAX_PrimaryFXSlotID = { 0xf317866d, 0x924c, 0x450c, { 0x86, 0x1b, 0xe6, 0xda, 0xa2, 0x5e, 0x7c, 0x20} };
+const GUID EAX_REVERB_EFFECT = { 0xcf95c8f, 0xa3cc, 0x4849, { 0xb0, 0xb6, 0x83, 0x2e, 0xcc, 0x18, 0x22, 0xdf} };
+
+#else // __linux__
+
 const GUID EAXPROPERTYID_EAX40_FXSlot0 = { 0xc4d79f1e, 0xf1ac, 0x436b, { 0xa8, 0x1d, 0xa7, 0x38, 0xe7, 0x4, 0x54, 0x69} };
 
 const GUID EAXPROPERTYID_EAX40_FXSlot1 = { 0x8c00e96, 0x74be, 0x4491, { 0x93, 0xaa, 0xe8, 0xad, 0x35, 0xa4, 0x91, 0x17} };
@@ -321,6 +371,8 @@ const GUID EAX_NULL_GUID = { 0x00000000, 0x0000, 0x0000, { 0x00, 0x00, 0x00, 0x0
 const GUID EAX_PrimaryFXSlotID = { 0xf317866d, 0x924c, 0x450c, { 0x86, 0x1b, 0xe6, 0xda, 0xa2, 0x5e, 0x7c, 0x20} };
 
 const GUID EAX_REVERB_EFFECT = { 0xcf95c8f, 0xa3cc, 0x4849, { 0xb0, 0xb6, 0x83, 0x2e, 0xcc, 0x18, 0x22, 0xdf} };
+
+#endif // __linux__
 
 /**************************************************************************************************\
 *
@@ -485,7 +537,7 @@ void S_Init( void ) {
 
 	if (s_UseOpenAL)
 	{	
-		ALCDevice = alcOpenDevice((ALubyte*)"DirectSound3D");
+		ALCDevice = alcOpenDevice((const ALCchar*)"DirectSound3D");
 		if (!ALCDevice)
 			return;
 
@@ -977,7 +1029,7 @@ static void EALFileInit(char *level)
 			lRoom = -10000;
 			for (i = 0; i < s_NumFXSlots; i++)
 			{
-				s_eaxSet(&s_FXSlotInfo[i].FXSlotGuid, EAXREVERB_ROOM, NULL,
+				s_eaxSet(s_eaxSet(&s_FXSlotInfo[i].FXSlotGuid, EAXREVERB_ROOM, NULL,s_FXSlotInfo[i].FXSlotGuid, EAXREVERB_ROOM, 0,
 					&lRoom, sizeof(long));
 			}
 		}
@@ -1561,7 +1613,7 @@ void S_StartSound(const vec3_t origin, int entityNum, soundChannel_t entchannel,
 				{
 					// Stop this sound
 					alSourceStop(ch->alSource);
-					alSourcei(ch->alSource, AL_BUFFER, NULL);
+					alSourcei(ch->alSource, AL_BUFFER, 0);
 					ch->bPlaying = false;
 					ch->thesfx = NULL;
 					break;
@@ -1577,7 +1629,7 @@ void S_StartSound(const vec3_t origin, int entityNum, soundChannel_t entchannel,
 				{
 					// Stop this sound
 					alSourceStop(ch->alSource);
-					alSourcei(ch->alSource, AL_BUFFER, NULL);
+					alSourcei(ch->alSource, AL_BUFFER, 0);
 					ch->bPlaying = false;
 					ch->thesfx = NULL;
 					break;
@@ -1793,7 +1845,7 @@ void S_StopSounds(void)
 		for (i = 0; i < s_numChannels; i++, ch++)
 		{
 			alSourceStop(s_channels[i].alSource);
-			alSourcei(s_channels[i].alSource, AL_BUFFER, NULL);
+			alSourcei(s_channels[i].alSource, AL_BUFFER, 0);
 			ch->thesfx = NULL;
 			memset(&ch->MP3StreamHeader, 0, sizeof(MP3STREAM));
 			ch->bLooping = false;
@@ -2699,6 +2751,7 @@ void S_Update( void ) {
 	S_Update_();
 }
 
+#ifdef __linux__
 void S_GetSoundtime(void)
 {
 	int		samplepos;
@@ -2743,6 +2796,7 @@ void S_GetSoundtime(void)
 }
 
 
+#endif // __linux__
 void S_Update_(void) {
 	unsigned        endtime;
 	int				samps;
@@ -2912,7 +2966,7 @@ void S_Update_(void) {
 					nBuffersToAdd = i + 1;
 
 				// Make sure queue is empty first
-				alSourcei(s_channels[source].alSource, AL_BUFFER, NULL);
+				alSourcei(s_channels[source].alSource, AL_BUFFER, 0);
 
 				for (i = 0; i < nBuffersToAdd; i++)
 				{
@@ -3085,7 +3139,7 @@ void UpdateSingleShotSounds()
 						if (state == AL_STOPPED)
 						{
 							// Attach NULL buffer to Source to remove any buffers left in the queue
-							alSourcei(ch->alSource, AL_BUFFER, NULL);
+							alSourcei(ch->alSource, AL_BUFFER, 0);
 							ch->thesfx = NULL;
 							ch->bPlaying = false;
 						}
@@ -5249,6 +5303,7 @@ qboolean SND_RegisterAudio_LevelLoadEnd(qboolean bDeleteEverythingNotUsedThisLev
 /*
 	Initialize the EAX Manager
 */
+#ifndef __linux__
 void InitEAXManager()
 {
 	LPEAXMANAGERCREATE lpEAXManagerCreateFn;
@@ -5260,7 +5315,7 @@ void InitEAXManager()
 	s_bEALFileLoaded = false;
 
 	// Check for EAX 4.0 support
-	s_bEAX = alIsExtensionPresent((ALubyte*)"EAX4.0");
+	s_bEAX = alIsExtensionPresent((const ALchar*)"EAX4.0");
 	
 	if (s_bEAX)
 	{
@@ -5269,7 +5324,7 @@ void InitEAXManager()
 	else
 	{
 		// Support for EAXUnified (automatic translation of EAX 4.0 calls into EAX 3.0)
-		if ((alIsExtensionPresent((ALubyte*)"EAX3.0")) && (alIsExtensionPresent((ALubyte*)"EAX4.0Emulated")))
+		if ((alIsExtensionPresent((const ALchar*)"EAX3.0")) && (alIsExtensionPresent((const ALchar*)"EAX4.0Emulated")))
 		{
 			s_bEAX = AL_TRUE;
 			Com_Printf("Found EAX 4.0 EMULATION support\n");
@@ -5278,10 +5333,10 @@ void InitEAXManager()
 
 	if (s_bEAX)
 	{
-		s_eaxSet = (EAXSet)alGetProcAddress((ALubyte*)"EAXSet");
+		s_eaxSet = (EAXSet)alGetProcAddress((const ALchar*)"EAXSet");
 		if (s_eaxSet == NULL)
 			s_bEAX = false;
-		s_eaxGet = (EAXGet)alGetProcAddress((ALubyte*)"EAXGet");
+		s_eaxGet = (EAXGet)alGetProcAddress((const ALchar*)"EAXGet");
 		if (s_eaxGet == NULL)
 			s_bEAX = false;
 	}
@@ -5319,7 +5374,7 @@ void InitEAXManager()
 
 					for (i = 0; i < EAX_MAX_FXSLOTS; i++)
 					{
-						if (s_eaxSet(&FXSlotGuids[i], EAXFXSLOT_ALLPARAMETERS, NULL, &FXSlotProp, sizeof(EAXFXSLOTPROPERTIES))==AL_NO_ERROR)
+						if (s_eaxSet(s_eaxSet(&FXSlotGuids[i], EAXFXSLOT_ALLPARAMETERS, NULL,FXSlotGuids[i], EAXFXSLOT_ALLPARAMETERS, 0, &FXSlotProp, sizeof(EAXFXSLOTPROPERTIES))==AL_NO_ERROR)
 						{
 							// We can use this slot
 							s_FXSlotInfo[s_NumFXSlots].FXSlotGuid = FXSlotGuids[i];
@@ -5329,9 +5384,9 @@ void InitEAXManager()
 						{
 							// If this slot already contains a reverb, then we will use it anyway (Slot 0 will
 							// be in this category).  (It probably means that Slot 0 is locked)
-							if (s_eaxGet(&FXSlotGuids[i], EAXFXSLOT_LOADEFFECT, NULL, &Effect, sizeof(GUID))==AL_NO_ERROR)
+							if (s_eaxGet(if (s_eaxGet(&FXSlotGuids[i], EAXFXSLOT_LOADEFFECT, NULL,FXSlotGuids[i], EAXFXSLOT_LOADEFFECT, 0, &Effect, sizeof(GUID))==AL_NO_ERROR)
 							{
-								if (Effect == EAX_REVERB_EFFECT)
+								if (memcmp(if (Effect == EAX_REVERB_EFFECT)Effect, if (Effect == EAX_REVERB_EFFECT)EAX_REVERB_EFFECT, sizeof(GUID)) == 0)
 								{
 									// We can use this slot
 									// Make sure the environment flag is on
@@ -5363,6 +5418,7 @@ void InitEAXManager()
 }
 
 /*
+#endif
 	Release the EAX Manager
 */
 void ReleaseEAXManager()
