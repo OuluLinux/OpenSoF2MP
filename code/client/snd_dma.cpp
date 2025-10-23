@@ -286,7 +286,6 @@ long					s_lNumEnvironments;		// Number of environment zones
 long					s_NumFXSlots;			// Number of EAX 4.0 FX Slots
 FXSLOTINFO				s_FXSlotInfo[EAX_MAX_FXSLOTS];	// Stores information about the EAX 4.0 FX Slots
 
-static void InitEAXManager();
 #else
 // Stub variables for Linux
 ALboolean				s_bEAX = AL_FALSE;		// Is EAX 4.0 support available
@@ -304,6 +303,7 @@ long					s_lNumEnvironments = 0;	// Number of environment zones
 long					s_NumFXSlots = 0;		// Number of EAX 4.0 FX Slots
 FXSLOTINFO				s_FXSlotInfo[EAX_MAX_FXSLOTS];	// Stores information about the EAX 4.0 FX Slots
 #endif
+static void InitEAXManager();
 static void ReleaseEAXManager();
 static bool LoadEALFile(char *szEALFilename);
 static void UnloadEALFile();
@@ -5417,8 +5417,10 @@ void InitEAXManager()
 	return;
 }
 
-/*
 #endif
+
+#ifndef __linux__
+/*
 	Release the EAX Manager
 */
 void ReleaseEAXManager()
@@ -6339,6 +6341,42 @@ static void UpdateEAXBuffer(channel_t *ch)
 
 	return;
 }
+
+#endif
+
+#ifdef __linux__
+// Linux stub implementations for EAX functions
+static void InitEAXManager() {
+	// EAX not available on Linux, do nothing
+	s_bEAX = false;
+	return;
+}
+
+static void ReleaseEAXManager() {
+	// EAX not available on Linux, do nothing
+	return;
+}
+
+static bool LoadEALFile(char *szEALFilename) {
+	// EAX not available on Linux, return false
+	return false;
+}
+
+static void UnloadEALFile() {
+	// EAX not available on Linux, do nothing
+	return;
+}
+
+static void UpdateEAXListener() {
+	// EAX not available on Linux, do nothing
+	return;
+}
+
+static void UpdateEAXBuffer(channel_t *ch) {
+	// EAX not available on Linux, do nothing
+	return;
+}
+#endif
 
 float CalcDistance(EMPOINT A, EMPOINT B)
 {
