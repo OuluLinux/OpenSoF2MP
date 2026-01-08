@@ -166,17 +166,18 @@ void BotSelectWeapon(int client, int weapon)
 
 void BotReportStatus(bot_state_t *bs)
 {
-	if (g_gametype.integer == GT_TEAM)
-	{
-		trap_EA_SayTeam(bs->client, teamplayStateDescriptions[bs->teamplayState]);
-	}
-	else if (g_gametype.integer == GT_SIEGE)
+	if (g_gametype.integer == GT_SIEGE)
 	{
 		trap_EA_SayTeam(bs->client, siegeStateDescriptions[bs->siegeState]);
 	}
 	else if (g_gametype.integer == GT_CTF || g_gametype.integer == GT_CTY)
 	{
 		trap_EA_SayTeam(bs->client, ctfStateDescriptions[bs->ctfState]);
+	}
+	else
+	{
+		// Default case - for other game types including team games (was GT_TEAM)
+		trap_EA_SayTeam(bs->client, teamplayStateDescriptions[bs->teamplayState]);
 	}
 }
 

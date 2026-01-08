@@ -26,6 +26,11 @@ This file is part of Jedi Academy.
 #include "snd_local.h"
 #include "cl_mp3.h"
 
+#ifdef __cplusplus
+#include <string>
+using std::string;
+#endif
+
 // Open AL
 void S_PreProcessLipSync(sfx_t *sfx);
 extern int s_UseOpenAL;
@@ -114,7 +119,7 @@ void DumpChunks(void)
 		memcpy (str, data_p, 4);
 		data_p += 4;
 		iff_chunk_len = GetLittleLong();
-		Com_Printf ("0x%x : %s (%d)\n", (int)(data_p - 4), str, iff_chunk_len);
+		Com_Printf ("0x%p : %s (%d)\n", (void*)(data_p - 4), str, iff_chunk_len);
 		data_p += (iff_chunk_len + 1) & ~1;
 	} while (data_p < iff_end);
 }
@@ -188,7 +193,7 @@ wavinfo_t GetWavinfo (const char *name, byte *wav, int wavlength)
 	else
 		info.samples = samples;
 
-	info.dataofs = data_p - wav;
+	info.dataofs = (int)((byte*)(data_p) - (byte*)(wav));
 
 
 	return info;

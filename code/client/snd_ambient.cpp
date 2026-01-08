@@ -31,6 +31,11 @@ This file is part of Jedi Academy.
 #include "snd_local.h"
 #endif
 
+#ifdef __cplusplus
+#include <string>
+using std::string;
+#endif
+
 static const int MAX_SET_VOLUME =	255;
 
 static void AS_GetGeneralSet( ambientSet_t & );

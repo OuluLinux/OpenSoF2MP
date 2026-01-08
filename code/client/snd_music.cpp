@@ -27,6 +27,11 @@ This file is part of Jedi Academy.
 #include "../qcommon/sstring.h"
 #include <algorithm>
 
+#ifdef __cplusplus
+#include <string>
+using std::string;
+#endif
+
 #ifdef _XBOX
 #include "snd_local_console.h"
 #include <xtl.h>

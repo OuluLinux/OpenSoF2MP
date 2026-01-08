@@ -189,4 +189,117 @@ typedef enum {
 	NUM_QUADS
 } quad_direction_t;
 
-#endif // __SOF2MP_TYPES_H__
+// Game types
+typedef enum {
+	GT_FFA = 0,              // free for all
+	GT_HOLOCRON,             // 
+	GT_JEDIMASTER,           // 
+	GT_TOURNAMENT,           // one on one tournament
+	GT_SINGLE_PLAYER,        // single player tournament
+	
+	//-- team games go after this --
+	GT_TEAM,                 // team deathmatch
+	GT_CTF,                  // capture the flag
+	GT_CTY,
+	GT_SIEGE,                // siege
+	GT_DUEL,
+	GT_POWERDUEL,
+	GT_SINGLE,
+	GT_TEAM2,
+	GT_CTF2,
+	GT_CTY2,
+	GT_SIEGE2,
+	GT_MAX_GAME_TYPE
+
+// Button definitions
+#define BUTTON_GESTURE      22
+#define BUTTON_USE_HOLDABLE 23
+#define BUTTON_FORCEPOWER   24
+
+// Weapon constants
+#define WP_NONE             0
+#define WP_STUN_BATON       1
+#define WP_MELEE            2
+#define WP_SABER            3
+#define WP_BRYAR_PISTOL     4
+#define WP_BLASTER          5
+#define WP_DISRUPTOR        6
+#define WP_BOWCASTER        7
+#define WP_REPEATER         8
+#define WP_DEMP2            9
+#define WP_FLECHETTE        10
+#define WP_ROCKET_LAUNCHER  11
+#define WP_THERMAL          12
+#define WP_TRIP_MINE        13
+#define WP_DET_PACK         14
+#define WP_EMPLACED_GUN     15
+#define WP_TURRET           16
+#define WP_GAUNTLET         17
+#define WP_NUM_WEAPONS      18
+
+// Event constants
+#define EV_SABER_ATTACK     100
+#define EV_SABER_HIT        101
+#define EV_SABER_BLOCK      102
+#define EV_SABER_CLASHFLARE 103
+#define EV_SABER_UNHOLSTER  104
+#define EV_SABER_TAUNT      105
+#define EV_FOOTSTEP_METAL   106
+#define EV_ROLL             107
+#define EV_JETPACK_ENABLE   108
+#define EV_JETPACK_DISABLE  109
+#define EV_JETPACK_IGNITE   110
+#define EV_JETPACK_STOP     111
+#define EV_JETPACK_ABORT    112
+#define EV_JETPACK_LIFTOFF  113
+#define EV_JETPACK_LAND     114
+#define EV_ENTITIES_LOOPING_SOUND 115
+#define EV_SLIDING          116
+#define EV_CUSTOM_PARTICLE_EFFECT 117
+#define EV_BOTWAYPOINTMSG   118
+#define EV_TEAM_POWER       119
+#define EV_ITEM_USE         120
+#define EV_ITEM_RESPAWN     121
+#define EV_ITEM_POP         122
+#define EV_PLAYER_TELEPORT_IN 123
+#define EV_PLAYER_TELEPORT_OUT 124
+#define EV_GRENADE_BOUNCE   125
+#define EV_MISSILE_STICK    126
+#define EV_PLAY_EFFECT      127
+#define EV_GENERAL_SOUND    128
+#define EV_GLOBAL_SOUND     129
+#define EV_PAIN             130
+#define EV_DEATH1           131
+#define EV_DEATH2           132
+#define EV_DEATH3           133
+#define EV_OBITUARY         134
+#define EV_POWERUP          135
+#define EV_ERROR_SOUND      136
+#define EV_MUTANT_SPLASH    137
+#define EV_WATER_TOUCH      138
+#define EV_WATER_WADE       139
+#define EV_WATER_JUMP       140
+#define EV_ITEM_PICKUP      141
+#define EV_ITEM_PICKUP_QUIET 142
+#define EV_MEDKIT_USED      143
+#define EV_WEAPONSOUND      144
+#define EV_FIRE_WEAPONB     145
+#define EV_FIRE_WEAPON2B     146
+#define EV_NOAMMO           147
+#define EV_CHANGE_WEAPONB    148
+#define EV_ALT_FIREB         149
+#define EV_USEB              150
+#define EV_ITEM_RESPAWNB     151
+#define EV_ITEM_POPB         152
+#define EV_PLAYER_TELEPORT_INB 153
+#define EV_PLAYER_TELEPORT_OUTB 154
+#define EV_GRENADE_BOUNCEB   155
+#define EV_MISSILE_STICKB    156
+#define EV_PLAY_EFFECTB      157
+#define EV_GENERAL_SOUNDB    158
+#define EV_GLOBAL_SOUNDB     159
+#define EV_PAINB             160
+#define EV_DEATH1B           161
+#define EV_DEATH2B           162
+#define EV_DEATH3B           163
+#define EV_OBITUARYB         164

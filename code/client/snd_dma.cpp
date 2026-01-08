@@ -1029,7 +1029,7 @@ static void EALFileInit(char *level)
 			lRoom = -10000;
 			for (i = 0; i < s_NumFXSlots; i++)
 			{
-				s_eaxSet(s_eaxSet(&s_FXSlotInfo[i].FXSlotGuid, EAXREVERB_ROOM, NULL,s_FXSlotInfo[i].FXSlotGuid, EAXREVERB_ROOM, 0,
+				s_eaxSet(&s_FXSlotInfo[i].FXSlotGuid, EAXREVERB_ROOM, 0,
 					&lRoom, sizeof(long));
 			}
 		}
